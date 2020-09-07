@@ -21,3 +21,5 @@ packages/
 *.nupkg
 *.nuget.props
 *.nuget.targets
+
+/MyONez.Samples.Base/Content/ParticleDesigner/*.pex.tiff
