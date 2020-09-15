@@ -1,6 +1,7 @@
 ﻿namespace GeonBit.UI.Utils
 {
     using System;
+    using System.Collections.Generic;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
@@ -36,6 +37,8 @@
         {
             this.MeshBatch.Draw(texture, destRect, srcRect, color);
         }
+
+        private Dictionary<SpriteFont, Dictionary<char, SpriteFont.Glyph>> glyphsCache = new Dictionary<SpriteFont, Dictionary<char, SpriteFont.Glyph>>();
 
         public void DrawString(
             SpriteFont spriteFont,
@@ -96,7 +99,13 @@
             var offset = Vector2.Zero;
             var firstGlyphOfLine = true;
 
-            var pGlyphs = spriteFont.Glyphs;
+            if (!this.glyphsCache.ContainsKey(spriteFont))
+            {
+                this.glyphsCache[spriteFont] = spriteFont.GetGlyphs();
+            }
+
+            var pGlyphs = this.glyphsCache[spriteFont];
+            
             for (var i = 0; i < text.Length; ++i)
             {
                 var c = text[i];
@@ -112,7 +121,7 @@
                     continue;
                 }
 
-                var pCurrentGlyph = spriteFont.GetGlyphs()[c];
+                var pCurrentGlyph = pGlyphs[c];
 
                 // The first character on a line might have a negative left side bearing.
                 // In this scenario, SpriteBatch/SpriteFont normally offset the text to the right,
