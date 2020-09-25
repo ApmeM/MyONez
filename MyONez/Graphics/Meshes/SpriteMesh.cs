@@ -58,7 +58,12 @@
             this.DestRect = new RectangleF(new Vector2(leftTop.X, leftTop.Y), new Vector2(rightBottom.X - leftTop.X, rightBottom.Y - leftTop.Y));
             this.Rotation += (float)Math.Acos(r.W);
         }
-        
+
+        public override void SetColor(Color value)
+        {
+            this.Color = value;
+        }
+
         protected override Vector3 GetCenter()
         {
             return new Vector3(

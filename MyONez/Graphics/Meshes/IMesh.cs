@@ -11,6 +11,7 @@
         public abstract void Draw(SpriteBatch spriteBatch);
         public abstract void ApplyEffectToMesh(SpriteEffects effect);
         public abstract void ApplyTransformMesh(Matrix transformation);
+        public abstract void SetColor(Color value);
         protected abstract Vector3 GetCenter();
 
         public void MoveMesh(Vector3 offset)

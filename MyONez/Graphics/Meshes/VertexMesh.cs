@@ -87,6 +87,15 @@
             }
         }
 
+        public override void SetColor(Color value)
+        {
+            var mesh = this;
+            for (var index = 0; index < mesh.Verts.Length; index++)
+            {
+                mesh.Verts[index].Color = value;
+            }
+        }
+
         protected override Vector3 GetCenter()
         {
             var count = this.Verts.Length;

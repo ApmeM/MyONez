@@ -37,7 +37,7 @@
         {
             get
             {
-                pixelTexture = pixelTexture ?? CreateSingleColorTexture(1, 1, Color.White);
+                pixelTexture = pixelTexture ?? Core.Instance.Content.Load<Texture2D>(ContentPaths.Textures.pixel);
                 return pixelTexture;
             }
         }
@@ -58,19 +58,6 @@
                 spriteBatch = spriteBatch ?? new SpriteBatch(Core.Instance.GraphicsDevice);
                 return spriteBatch;
             }
-        }
-
-
-
-        public static Texture2D CreateSingleColorTexture(int width, int height, Color color)
-        {
-            var texture = new Texture2D(Core.Instance.GraphicsDevice, width, height);
-            var data = new Color[width * height];
-            for (var i = 0; i < data.Length; i++)
-                data[i] = color;
-
-            texture.SetData(data);
-            return texture;
         }
 
         public static void Draw(

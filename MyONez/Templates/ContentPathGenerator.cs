@@ -19,6 +19,11 @@ namespace MyONez
 			public const string spriteEffect = @"effects/SpriteEffect";
 		}
 
+		public static class Textures
+		{
+			public const string pixel = @"textures/pixel";
+		}
+
 		public const string content = @"Content";
 
 

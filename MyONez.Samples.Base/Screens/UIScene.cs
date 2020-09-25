@@ -79,7 +79,7 @@
 
             // add show-get button
             Button showGitButton = new Button("Git Repo", ButtonSkin.Fancy, Anchor.TopCenter, new Vector2(280, topPanelHeight));
-            showGitButton.OnClick = (btn) => { MessageBox.ShowMsgBox("Git Repo", "https://github.com/RonenNess/GeonBit.UI"); };
+            showGitButton.OnClick = (btn) => { MessageBox.BuildMessageBox("Git Repo", "https://github.com/RonenNess/GeonBit.UI").Show(); };
             topPanel.AddChild(showGitButton);
             // events panel for debug
             Panel eventsPanel = new Panel(new Vector2(400, 530), PanelSkin.Simple, Anchor.CenterLeft, new Vector2(-10, 0));
@@ -850,7 +850,7 @@ Maybe something interesting in tab3?"));
                         var btn = new Button("Show Simple Message", ButtonSkin.Default);
                         btn.OnClick += (entity) =>
                         {
-                            MessageBox.ShowMsgBox("Hello World!", "This is a simple message box. It doesn't say much, really.");
+                            MessageBox.BuildMessageBox("Hello World!", "This is a simple message box. It doesn't say much, really.").Show();
                         };
                         panel.AddChild(btn);
                     }
@@ -861,10 +861,10 @@ Maybe something interesting in tab3?"));
                         var btn = new Button("Show Custom Message", ButtonSkin.Default);
                         btn.OnClick += (entity) =>
                         {
-                            MessageBox.ShowMsgBox("Custom Message!", "In this message there are two custom buttons.\n\nYou can set different actions per button. For example, click on 'Surprise' and see what happens!", new MessageBox.MsgBoxOption[] {
+                            MessageBox.BuildMessageBox("Custom Message!", "In this message there are two custom buttons.\n\nYou can set different actions per button. For example, click on 'Surprise' and see what happens!", new MessageBox.MsgBoxOption[] {
                                 new MessageBox.MsgBoxOption("Close", () => { return true; }),
-                                new MessageBox.MsgBoxOption("Surprise", () => { MessageBox.ShowMsgBox("Files Removed Successfully", "Win32 was successfully removed from this computer. Please restart to complete OS destruction.\n\n(Just kidding!)"); return true; })
-                                });
+                                new MessageBox.MsgBoxOption("Surprise", () => { MessageBox.BuildMessageBox("Files Removed Successfully", "Win32 was successfully removed from this computer. Please restart to complete OS destruction.\n\n(Just kidding!)").Show(); return true; })
+                                }).Show();
                         };
                         panel.AddChild(btn);
                     }
@@ -877,9 +877,9 @@ Maybe something interesting in tab3?"));
                         {
                             var textInput = new TextInput(false);
                             textInput.PlaceholderText = "Enter your name";
-                            MessageBox.ShowMsgBox("Message With Extra!", "In this message box we attached an extra entity from outside (a simple text input).\n\nPretty neat, huh?", new MessageBox.MsgBoxOption[] {
+                            MessageBox.BuildMessageBox("Message With Extra!", "In this message box we attached an extra entity from outside (a simple text input).\n\nPretty neat, huh?", new MessageBox.MsgBoxOption[] {
                                 new MessageBox.MsgBoxOption("Close", () => { return true; }),
-                                }, new [] { textInput });
+                                }, new [] { textInput }).Show();
                         };
                         panel.AddChild(btn);
                     }
@@ -910,22 +910,25 @@ Maybe something interesting in tab3?"));
                             new FormFieldData(FormFieldType.Section, "newsection", "New Form Section") { },
                             new FormFieldData(FormFieldType.DropDown, "dropdown1", "DropDown field") { Choices = new string[] {"option1", "option2", "option3" } },
                         }, null);
-                        MessageBox.ShowMsgBox("Example Form", "", "Close Form And Show Values", extraEntities: new [] { newForm.FormPanel }, onDone: () =>
+                        var msgBox = MessageBox.BuildMessageBox("Example Form", "", "Close Form And Show Values", extraEntities: new [] { newForm.FormPanel });
+                        msgBox.OnDone = (b) =>
                         {
-                            MessageBox.ShowMsgBox("Form Values", string.Format(
-                                "Text Field: '{5}{0}{6}'\r\n" +
-                                "Slider: '{5}{1}{6}'\r\n" +
-                                "Radio Buttons: '{5}{2}{6}'\r\n" +
-                                "Checkbox: '{5}{3}{6}'\r\n" +
-                                "DropDown: '{5}{4}{6}'",
-                                newForm.GetValue("text1"),
-                                newForm.GetValue("slider1"),
-                                newForm.GetValue("radios1"),
-                                newForm.GetValue("checkbox1"),
-                                newForm.GetValue("dropdown1"),
-                                "{{L_GREEN}}", "{{DEFAULT}}"
-                                ));
-                        });
+                            MessageBox.BuildMessageBox(
+                                "Form Values",
+                                string.Format(
+                                    "Text Field: '{5}{0}{6}'\r\n" + "Slider: '{5}{1}{6}'\r\n"
+                                                                  + "Radio Buttons: '{5}{2}{6}'\r\n"
+                                                                  + "Checkbox: '{5}{3}{6}'\r\n"
+                                                                  + "DropDown: '{5}{4}{6}'",
+                                    newForm.GetValue("text1"),
+                                    newForm.GetValue("slider1"),
+                                    newForm.GetValue("radios1"),
+                                    newForm.GetValue("checkbox1"),
+                                    newForm.GetValue("dropdown1"),
+                                    "{{L_GREEN}}",
+                                    "{{DEFAULT}}")).Show();
+                        };
+                        msgBox.Show();
                     };
                 }
 
@@ -943,10 +946,10 @@ Maybe something interesting in tab3?"));
 
                     var layout = new SimpleFileMenu.MenuLayout();
                     layout.AddMenu("File", 260);
-                    layout.AddItemToMenu("File", "New", () => { MessageBox.ShowMsgBox("Something New!", "Lets make something new."); });
-                    layout.AddItemToMenu("File", "Save", () => { MessageBox.ShowMsgBox("Something Saved!", "Your thing was saved successfully."); });
-                    layout.AddItemToMenu("File", "Load", () => { MessageBox.ShowMsgBox("Something Loaded!", "Your thing was loaded successfully."); });
-                    layout.AddItemToMenu("File", "Exit", () => { MessageBox.ShowMsgBox("Not Yet", "We still have much to see."); });
+                    layout.AddItemToMenu("File", "New", () => { MessageBox.BuildMessageBox("Something New!", "Lets make something new.").Show(); });
+                    layout.AddItemToMenu("File", "Save", () => { MessageBox.BuildMessageBox("Something Saved!", "Your thing was saved successfully.").Show(); });
+                    layout.AddItemToMenu("File", "Load", () => { MessageBox.BuildMessageBox("Something Loaded!", "Your thing was loaded successfully.").Show(); });
+                    layout.AddItemToMenu("File", "Exit", () => { MessageBox.BuildMessageBox("Not Yet", "We still have much to see.").Show(); });
                     layout.AddMenu("Display", 260);
                     layout.AddItemToMenu("Display", "Zoom In", () => { userInterface.GlobalScale += 0.1f; });
                     layout.AddItemToMenu("Display", "Zoom Out", () => { userInterface.GlobalScale -= 0.1f; });

@@ -4,7 +4,6 @@
     using System.Collections;
 
     using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.GlobalManagers.Coroutines;
     using MyONez.Graphics;
@@ -25,16 +24,12 @@
 
         private Color fromColor = Color.White;
 
-        private Texture2D overlayTexture;
-
         private Color toColor = Color.Transparent;
 
         private Color color;
 
         public override IEnumerator OnBeginTransition()
         {
-            this.overlayTexture = Graphic.CreateSingleColorTexture(1, 1, this.FadeToColor);
-
             var startAt = DateTime.Now;
             while ((DateTime.Now - startAt).TotalSeconds < this.FadeOutDuration)
             {
@@ -68,7 +63,6 @@
             }
 
             this.TransitionComplete();
-            this.overlayTexture.Dispose();
         }
 
         public override void Render()

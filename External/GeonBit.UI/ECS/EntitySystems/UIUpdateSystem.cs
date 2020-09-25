@@ -1,6 +1,7 @@
 ﻿namespace GeonBit.UI.ECS.EntitySystems
 {
     using System;
+    using System.Linq;
 
     using GeonBit.UI.ECS.Components;
     using GeonBit.UI.Utils;
@@ -11,6 +12,7 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
+    using Microsoft.Xna.Framework.Input;
 
     using MyONez;
     using MyONez.ECS;
@@ -34,19 +36,44 @@
             var ui = entity.GetComponent<UIComponent>();
             var scale = entity.GetComponent<ScaleComponent>()?.Scale ?? Vector2.One;
             var mouse = entity.GetOrCreateComponent<InputMouseComponent>();
+            var touch = entity.GetOrCreateComponent<InputTouchComponent>();
             var finalRender = entity.GetOrCreateComponent<FinalRenderComponent>();
 
             this.totalTime += gameTime;
 
             UserInterface.Active = ui.UserInterface;
             ui.UserInterface.MouseInputProvider = ui.MouseProvider;
+
             ui.MouseProvider._oldMouseState = ui.MouseProvider._newMouseState;
-            ui.MouseProvider._newMouseState.X = mouse.ScaledMousePosition.X;
-            ui.MouseProvider._newMouseState.Y = mouse.ScaledMousePosition.Y;
-            ui.MouseProvider._newMouseState.LeftButton = mouse.CurrentMouseState.LeftButton;
-            ui.MouseProvider._newMouseState.RightButton = mouse.CurrentMouseState.RightButton;
-            ui.MouseProvider._newMouseState.MiddleButton = mouse.CurrentMouseState.MiddleButton;
-            ui.MouseProvider._newMouseState.ScrollWheelValue = mouse.CurrentMouseState.ScrollWheelValue;
+            if (touch.IsConnected)
+            {
+                if (touch.CurrentTouches.Any())
+                {
+                    var touchPosition = touch.GetScaledPosition(touch.CurrentTouches[0].Position);
+                    ui.MouseProvider._newMouseState.X = touchPosition.X;
+                    ui.MouseProvider._newMouseState.Y = touchPosition.Y;
+                    ui.MouseProvider._newMouseState.LeftButton = ButtonState.Pressed;
+                }
+                else
+                {
+                    ui.MouseProvider._newMouseState.X = ui.MouseProvider._oldMouseState.X;
+                    ui.MouseProvider._newMouseState.Y = ui.MouseProvider._oldMouseState.Y;
+                    ui.MouseProvider._newMouseState.LeftButton = ButtonState.Released;
+                }
+
+                ui.MouseProvider._newMouseState.RightButton = ButtonState.Released;
+                ui.MouseProvider._newMouseState.MiddleButton = ButtonState.Released;
+                ui.MouseProvider._newMouseState.ScrollWheelValue = 0;
+            }
+            else
+            {
+                ui.MouseProvider._newMouseState.X = mouse.ScaledMousePosition.X;
+                ui.MouseProvider._newMouseState.Y = mouse.ScaledMousePosition.Y;
+                ui.MouseProvider._newMouseState.LeftButton = mouse.CurrentMouseState.LeftButton;
+                ui.MouseProvider._newMouseState.RightButton = mouse.CurrentMouseState.RightButton;
+                ui.MouseProvider._newMouseState.MiddleButton = mouse.CurrentMouseState.MiddleButton;
+                ui.MouseProvider._newMouseState.ScrollWheelValue = mouse.CurrentMouseState.ScrollWheelValue;
+            }
 
             ui.UserInterface.GlobalScale = scale.X;
             ui.GameTime.TotalGameTime = this.totalTime;
