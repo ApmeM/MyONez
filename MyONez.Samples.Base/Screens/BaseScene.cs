@@ -26,7 +26,7 @@
         {
             this.AddEntitySystem(new UIUpdateSystem(Core.Instance.Content));
             this.AddRenderer(new RenderLayerRenderer(ScreenSpaceRenderLayer) { RenderAfterPostProcessors = true });
-            var entity = this.CreateEntity("ui");
+            var entity = this.CreateEntity("basic-ui");
             entity.AddComponent<RenderLayerComponent>().Layer = ScreenSpaceRenderLayer;
             entity.AddComponent<ScaleComponent>().Scale = Vector2.One * 0.7f;
             var ui = entity.AddComponent<UIComponent>().UserInterface;

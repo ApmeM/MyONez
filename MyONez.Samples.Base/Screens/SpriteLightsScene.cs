@@ -9,7 +9,6 @@
     using MyONez.GlobalManagers.Tweens.Interfaces;
     using MyONez.Graphics;
     using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.RenderProcessors.Impl;
     using MyONez.Graphics.ResolutionPolicy;
     using MyONez.Maths;
     using MyONez.Maths.Easing;
@@ -72,7 +71,7 @@
                 Random.Range(50, this.SceneRenderTarget.Width - 100),
                 Random.Range(50, this.SceneRenderTarget.Height - 100));
 
-            var entity = this.CreateEntity("light");
+            var entity = this.CreateEntity();
             entity.AddComponent(new SpriteComponent(texture));
             var entityPos = entity.AddComponent<PositionComponent>();
             entityPos.Position = position;

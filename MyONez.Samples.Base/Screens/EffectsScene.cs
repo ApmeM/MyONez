@@ -49,22 +49,22 @@
 
             var primitiveDrawable = new PrimitiveDrawable(Color.Black);
 
-            var border = this.CreateEntity("border");
+            var border = this.CreateEntity();
             border.AddComponent<ScaleComponent>().Scale = new Vector2(moonTex.Width, 4);
             border.AddComponent<PositionComponent>().Position = new Vector2(moonTex.Width / 2, 2);
             border.AddComponent<SpriteComponent>().Drawable = primitiveDrawable;
 
-            border = this.CreateEntity("border");
+            border = this.CreateEntity();
             border.AddComponent<ScaleComponent>().Scale = new Vector2(moonTex.Width, 4);
             border.AddComponent<PositionComponent>().Position = new Vector2(moonTex.Width / 2, moonTex.Height - 2);
             border.AddComponent<SpriteComponent>().Drawable = primitiveDrawable;
 
-            border = this.CreateEntity("border");
+            border = this.CreateEntity();
             border.AddComponent<ScaleComponent>().Scale = new Vector2(4, moonTex.Height);
             border.AddComponent<PositionComponent>().Position = new Vector2(2, moonTex.Height / 2);
             border.AddComponent<SpriteComponent>().Drawable = primitiveDrawable;
 
-            border = this.CreateEntity("border");
+            border = this.CreateEntity();
             border.AddComponent<ScaleComponent>().Scale = new Vector2(4, moonTex.Height);
             border.AddComponent<PositionComponent>().Position = new Vector2(moonTex.Width - 2, moonTex.Height / 2);
             border.AddComponent<SpriteComponent>().Drawable = primitiveDrawable;
@@ -72,7 +72,7 @@
 
             var drawable = new SubtextureDrawable(reflectionRenderer.RenderTexture, 0, 0, moonTex.Width, moonTex.Height);
 
-            var tv = this.CreateEntity("Effect");
+            var tv = this.CreateEntity();
             tv.AddComponent<SpriteComponent>().Drawable = drawable;
             tv.AddComponent<PositionComponent>().Position = new Vector2(moonTex.Width / 2 + 5, moonTex.Height / 2 + 5);
             tv.AddComponent<RenderLayerComponent>().Layer = 1;
@@ -82,7 +82,7 @@
 
             foreach (var effect in this.GetEffects())
             {
-                tv = this.CreateEntity("Effect");
+                tv = this.CreateEntity();
                 tv.AddComponent<SpriteComponent>().Drawable = drawable;
                 tv.AddComponent<PositionComponent>().Position = new Vector2(moonTex.Width / 2 + 5 + startx * 150, moonTex.Height / 2 + 5 + starty * 200);
                 tv.AddComponent<MaterialComponent>().Material = new Material(){Effect = effect};

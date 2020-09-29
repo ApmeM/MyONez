@@ -88,8 +88,8 @@
         {
             var source = this.SourceRect;
             var destination = new RectangleF(
-                -(this.Origin?.X ?? this.SourceRect.Width),
-                -(this.Origin?.Y ?? this.SourceRect.Height),
+                -(this.Origin?.X ?? this.SourceRect.Width / 2f),
+                -(this.Origin?.Y ?? this.SourceRect.Height / 2f),
                 width,
                 height);
             target.Draw(this.Texture2D, destination, source, color, depth);

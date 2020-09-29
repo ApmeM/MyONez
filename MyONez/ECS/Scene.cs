@@ -343,7 +343,7 @@ namespace MyONez.ECS
         ///     add the Entity to this Scene, and return it
         /// </summary>
         /// <returns></returns>
-        public Entity CreateEntity(string name)
+        public Entity CreateEntity(string name = null)
         {
             var entity = new Entity(name);
             return this.AddEntity(entity);
@@ -387,17 +387,6 @@ namespace MyONez.ECS
         public List<Entity> FindEntitiesWithTag(int tag)
         {
             return this.entities.FindEntitiesByTag(tag);
-        }
-
-        /// <summary>
-        ///     returns all entities of Type T
-        /// </summary>
-        /// <returns>The of type.</returns>
-        /// <typeparam name="T">The 1st type parameter.</typeparam>
-        public List<Entity> EntitiesOfType<T>()
-            where T : Entity
-        {
-            return this.entities.FindEntitiesByType<T>();
         }
 
         #endregion
