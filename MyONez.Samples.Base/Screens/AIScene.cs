@@ -21,6 +21,7 @@
     using MyONez.ECS.EntitySystems;
     using MyONez.ECS.EntitySystems.VirtualInput;
     using MyONez.Graphics;
+    using MyONez.Graphics.Cameras;
     using MyONez.Graphics.Drawable;
     using MyONez.Graphics.Meshes;
     using MyONez.Graphics.Renderers;
@@ -43,6 +44,7 @@
             Core.Instance.Screen.SetSize(1280, 720);
 
             this.AddRenderer(new RenderLayerExcludeRenderer(ScreenSpaceRenderLayer));
+            this.AddRenderer(new ScreenSpaceRenderer(ScreenSpaceRenderLayer));
 
             this.Camera.RawZoom = 25;
 
