@@ -59,7 +59,16 @@
     <DebugSymbols>false</DebugSymbols>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup> 
+    <Reference Include="BrainAI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BrainAI.2.1.0\lib\netstandard2.0\BrainAI.dll</HintPath>
+    </Reference>
+    <Reference Include="FaceUI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FaceUI.2.0.0\lib\netstandard2.0\FaceUI.dll</HintPath>
+    </Reference>
+    <Reference Include="LocomotorECS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LocomotorECS.1.1.0\lib\netstandard2.0\LocomotorECS.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\MyONez\packages\MonoGame.Framework.Android.3.7.1.189\lib\MonoAndroid\MonoGame.Framework.dll</HintPath>
@@ -85,9 +94,6 @@
     </MonoGameContentReference>
     <MonoGameContentReference Include="..\MyONez.Samples.Base\Content\Content.mgcb">
       <Link>Content\Content.mgcb</Link>
-    </MonoGameContentReference>
-    <MonoGameContentReference Include="..\External\GeonBit.UI\GeonBit.UI\GeonBit.UI\Content\Content.mgcb">
-      <Link>Content\GeonBitContent.mgcb</Link>
     </MonoGameContentReference>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -131,7 +137,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\MyONez\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\MyONez\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets'))" />
+    <Error Condition="!Exists('..\packages\FaceUI.Content.2.0.0\build\FaceUI.Content.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FaceUI.Content.2.0.0\build\FaceUI.Content.targets'))" />
   </Target>
+  <Import Project="..\packages\FaceUI.Content.2.0.0\build\FaceUI.Content.targets" Condition="Exists('..\packages\FaceUI.Content.2.0.0\build\FaceUI.Content.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

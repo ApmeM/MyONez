@@ -1,20 +1,19 @@
-﻿namespace GeonBit.UI.ECS.EntitySystems
+﻿namespace MyONez.AdditionalContent.FaceUI.ECS.EntitySystems
 {
     using System;
     using System.Linq;
 
-    using GeonBit.UI.ECS.Components;
-    using GeonBit.UI.Utils;
+    using global::FaceUI;
 
     using LocomotorECS;
     using LocomotorECS.Matching;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Content;
-    using Microsoft.Xna.Framework.Graphics;
     using Microsoft.Xna.Framework.Input;
 
-    using MyONez;
+    using MyONez.AdditionalContent.FaceUI.ECS.Components;
+    using MyONez.AdditionalContent.FaceUI.Utils;
     using MyONez.ECS;
     using MyONez.ECS.Components;
 

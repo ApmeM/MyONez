@@ -7,11 +7,14 @@
 // Since: 2016.
 //-----------------------------------------------------------------------------
 #endregion
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
-namespace GeonBit.UI
+namespace MyONez.AdditionalContent.FaceUI.Utils
 {
+    using global::FaceUI;
+
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Input;
+
     public class ResolutionMouseProvider : IMouseInput
     {
         public struct State
@@ -42,25 +45,25 @@ namespace GeonBit.UI
         public void Update(GameTime gameTime)
         {
             // get mouse position
-            _oldMousePos = _newMousePos;
-            _newMousePos = new Vector2(_newMouseState.X, _newMouseState.Y);
+            this._oldMousePos = this._newMousePos;
+            this._newMousePos = new Vector2(this._newMouseState.X, this._newMouseState.Y);
 
             // get mouse wheel state
-            int prevMouseWheel = MouseWheel;
-            MouseWheel = _newMouseState.ScrollWheelValue;
-            MouseWheelChange = System.Math.Sign((double)MouseWheel - prevMouseWheel);
+            int prevMouseWheel = this.MouseWheel;
+            this.MouseWheel = this._newMouseState.ScrollWheelValue;
+            this.MouseWheelChange = System.Math.Sign((double)this.MouseWheel - prevMouseWheel);
         }
 
         public void UpdateMousePosition(Vector2 pos)
         {
             // move mouse position back to center
             Mouse.SetPosition((int)pos.X, (int)pos.Y);
-            _newMousePos = _oldMousePos = pos;
+            this._newMousePos = this._oldMousePos = pos;
         }
 
         public Vector2 TransformMousePosition(Matrix? transform)
         {
-            var newMousePos = _newMousePos;
+            var newMousePos = this._newMousePos;
             if (transform != null)
             {
                 return Vector2.Transform(newMousePos, transform.Value) - new Vector2(transform.Value.Translation.X, transform.Value.Translation.Y);
@@ -70,61 +73,61 @@ namespace GeonBit.UI
 
         public Vector2 MousePosition
         {
-            get { return _newMousePos; }
+            get { return this._newMousePos; }
         }
 
         public Vector2 MousePositionDiff
         {
-            get { return _newMousePos - _oldMousePos; }
+            get { return this._newMousePos - this._oldMousePos; }
         }
 
         public bool MouseButtonDown(MouseButton button = MouseButton.Left)
         {
-            return GetMouseButtonState(button) == ButtonState.Pressed;
+            return this.GetMouseButtonState(button) == ButtonState.Pressed;
         }
 
         public bool AnyMouseButtonDown()
         {
-            return MouseButtonDown(MouseButton.Left) ||
-                MouseButtonDown(MouseButton.Right) ||
-                MouseButtonDown(MouseButton.Middle);
+            return this.MouseButtonDown(MouseButton.Left) ||
+                this.MouseButtonDown(MouseButton.Right) ||
+                this.MouseButtonDown(MouseButton.Middle);
         }
 
         public bool MouseButtonReleased(MouseButton button = MouseButton.Left)
         {
-            return GetMouseButtonState(button) == ButtonState.Released && GetMousePreviousButtonState(button) == ButtonState.Pressed;
+            return this.GetMouseButtonState(button) == ButtonState.Released && this.GetMousePreviousButtonState(button) == ButtonState.Pressed;
         }
 
         public bool AnyMouseButtonReleased()
         {
-            return MouseButtonReleased(MouseButton.Left) ||
-                MouseButtonReleased(MouseButton.Right) ||
-                MouseButtonReleased(MouseButton.Middle);
+            return this.MouseButtonReleased(MouseButton.Left) ||
+                this.MouseButtonReleased(MouseButton.Right) ||
+                this.MouseButtonReleased(MouseButton.Middle);
         }
 
         public bool MouseButtonPressed(MouseButton button = MouseButton.Left)
         {
-            return GetMouseButtonState(button) == ButtonState.Pressed && GetMousePreviousButtonState(button) == ButtonState.Released;
+            return this.GetMouseButtonState(button) == ButtonState.Pressed && this.GetMousePreviousButtonState(button) == ButtonState.Released;
         }
 
         public bool AnyMouseButtonPressed()
         {
-            return MouseButtonPressed(MouseButton.Left) ||
-                MouseButtonPressed(MouseButton.Right) ||
-                MouseButtonPressed(MouseButton.Middle);
+            return this.MouseButtonPressed(MouseButton.Left) ||
+                this.MouseButtonPressed(MouseButton.Right) ||
+                this.MouseButtonPressed(MouseButton.Middle);
         }
 
         public bool MouseButtonClick(MouseButton button = MouseButton.Left)
         {
-            return GetMouseButtonState(button) == ButtonState.Released && GetMousePreviousButtonState(button) == ButtonState.Pressed;
+            return this.GetMouseButtonState(button) == ButtonState.Released && this.GetMousePreviousButtonState(button) == ButtonState.Pressed;
         }
 
         public bool AnyMouseButtonClicked()
         {
             return
-                MouseButtonClick(MouseButton.Left) ||
-                MouseButtonClick(MouseButton.Right) ||
-                MouseButtonClick(MouseButton.Middle);
+                this.MouseButtonClick(MouseButton.Left) ||
+                this.MouseButtonClick(MouseButton.Right) ||
+                this.MouseButtonClick(MouseButton.Middle);
         }
 
         private ButtonState GetMouseButtonState(MouseButton button = MouseButton.Left)
@@ -132,11 +135,11 @@ namespace GeonBit.UI
             switch (button)
             {
                 case MouseButton.Left:
-                    return _newMouseState.LeftButton;
+                    return this._newMouseState.LeftButton;
                 case MouseButton.Right:
-                    return _newMouseState.RightButton;
+                    return this._newMouseState.RightButton;
                 case MouseButton.Middle:
-                    return _newMouseState.MiddleButton;
+                    return this._newMouseState.MiddleButton;
             }
             return ButtonState.Released;
         }
@@ -146,11 +149,11 @@ namespace GeonBit.UI
             switch (button)
             {
                 case MouseButton.Left:
-                    return _oldMouseState.LeftButton;
+                    return this._oldMouseState.LeftButton;
                 case MouseButton.Right:
-                    return _oldMouseState.RightButton;
+                    return this._oldMouseState.RightButton;
                 case MouseButton.Middle:
-                    return _oldMouseState.MiddleButton;
+                    return this._oldMouseState.MiddleButton;
             }
             return ButtonState.Released;
         }

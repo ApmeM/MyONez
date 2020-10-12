@@ -5,12 +5,12 @@
     using System;
     using System.Collections.Generic;
 
-    using GeonBit.UI.ECS.Components;
-    using GeonBit.UI.Entities;
+    using FaceUI.Entities;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using MyONez.AdditionalContent.FaceUI.ECS.Components;
     using MyONez.AdditionalContent.SceneTransitions;
     using MyONez.Graphics.Renderers;
     using MyONez.Graphics.ResolutionPolicy;

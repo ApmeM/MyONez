@@ -1,7 +1,9 @@
-﻿namespace GeonBit.UI.Utils
+﻿namespace MyONez.AdditionalContent.FaceUI.Utils
 {
     using System;
     using System.Collections.Generic;
+
+    using global::FaceUI.Utils;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;

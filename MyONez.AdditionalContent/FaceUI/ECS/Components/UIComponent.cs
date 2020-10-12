@@ -1,8 +1,12 @@
-﻿namespace GeonBit.UI.ECS.Components
+﻿namespace MyONez.AdditionalContent.FaceUI.ECS.Components
 {
+    using global::FaceUI;
+
     using LocomotorECS;
 
     using Microsoft.Xna.Framework;
+
+    using MyONez.AdditionalContent.FaceUI.Utils;
 
     public class UIComponent : Component
     {

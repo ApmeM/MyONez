@@ -45,18 +45,33 @@
         
         public override void ApplyTransformMesh(Matrix transform)
         {
-            transform.Decompose(out var s, out var r, out var t);
-
             var leftTop = Vector3.Transform(
                 new Vector3 { X = this.DestRect.Left, Y = this.DestRect.Top, Z = 0 },
                 transform);
-
+            var leftBottom = Vector3.Transform(
+                new Vector3 { X = this.DestRect.Left, Y = this.DestRect.Bottom, Z = 0 },
+                transform);
+            var rightTop = Vector3.Transform(
+                new Vector3 { X = this.DestRect.Right, Y = this.DestRect.Top, Z = 0 },
+                transform);
             var rightBottom = Vector3.Transform(
                 new Vector3 { X = this.DestRect.Right, Y = this.DestRect.Bottom, Z = 0 },
                 transform);
 
-            this.DestRect = new RectangleF(new Vector2(leftTop.X, leftTop.Y), new Vector2(rightBottom.X - leftTop.X, rightBottom.Y - leftTop.Y));
-            this.Rotation += (float)Math.Acos(r.W);
+            var rotation = 0f;
+            var position = new Vector2(leftTop.X, leftTop.Y);
+            var size = new Vector2(rightBottom.X - leftTop.X, rightBottom.Y - leftTop.Y);
+            
+            if (leftTop.Y != rightTop.Y)
+            {
+                rotation = (float)Math.Atan((leftTop.X - rightTop.X) / (leftTop.Y - rightTop.Y));
+                var squareCenter = (leftTop + rightBottom) / 2;
+                size = new Vector2((leftTop - rightTop).Length(), (leftTop - leftBottom).Length());
+                position = new Vector2(squareCenter.X, squareCenter.Y);
+            }
+
+            this.DestRect = new RectangleF(position, size);
+            this.Rotation += rotation;
         }
 
         public override void SetColor(Color value)

@@ -1,11 +1,11 @@
-﻿namespace BrainAI.ECS.EntitySystems
+﻿namespace MyONez.AdditionalContent.BrainAI.EntitySystems
 {
     using System;
 
-    using BrainAI.ECS.Components;
-
     using LocomotorECS;
     using LocomotorECS.Matching;
+
+    using MyONez.AdditionalContent.BrainAI.Components;
 
     public class AIUpdateSystem : EntityProcessingSystem
     {

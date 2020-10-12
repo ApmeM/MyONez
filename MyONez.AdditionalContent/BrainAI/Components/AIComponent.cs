@@ -1,6 +1,6 @@
-﻿namespace BrainAI.ECS.Components
+﻿namespace MyONez.AdditionalContent.BrainAI.Components
 {
-    using BrainAI.AI;
+    using global::BrainAI.AI;
 
     using LocomotorECS;
 

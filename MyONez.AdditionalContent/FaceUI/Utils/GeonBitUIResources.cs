@@ -1,10 +1,11 @@
-﻿namespace GeonBit.UI.Utils
+﻿namespace MyONez.AdditionalContent.FaceUI.Utils
 {
     using System;
     using System.Collections;
 
-    using GeonBit.UI.DataTypes;
-    using GeonBit.UI.Entities;
+    using global::FaceUI;
+    using global::FaceUI.DataTypes;
+    using global::FaceUI.Entities;
 
     using Microsoft.Xna.Framework.Content;
     using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +14,7 @@
     {
         public static IEnumerator GetEnumerator(ContentManager content, string theme)
         {
-            var root = "GeonBit.UI/themes/" + theme + "/";
+            var root = "FaceUI/themes/" + theme + "/";
 
             content.Load<Texture2D>(root + "textures/horizontal_line");
             yield return 0;
@@ -36,7 +37,7 @@
 
             foreach (CursorType cursor in Enum.GetValues(typeof(CursorType)))
             {
-                string cursorName = Enum.GetName(typeof(CursorType), cursor).ToLowerInvariant();
+                string cursorName = Enum.GetName(typeof(CursorType), cursor).ToLower();
                 content.Load<CursorTextureData>(root + "textures/cursor_" + cursorName + "_md");
             }
 
@@ -48,7 +49,7 @@
                 {
                     continue;
                 }
-                string skinName = skin.ToString().ToLowerInvariant();
+                string skinName = skin.ToString().ToLower();
                 content.Load<TextureData>(root + "textures/panel_" + skinName + "_md");
             }
             yield return 0;
@@ -56,7 +57,7 @@
             yield return 0;
             foreach (SliderSkin skin in Enum.GetValues(typeof(SliderSkin)))
             {
-                string skinName = skin.ToString().ToLowerInvariant();
+                string skinName = skin.ToString().ToLower();
                 content.Load<TextureData>(root + "textures/slider_" + skinName + "_md");
             }
             yield return 0;
@@ -67,7 +68,7 @@
             yield return 0;
             foreach (ButtonSkin skin in Enum.GetValues(typeof(ButtonSkin)))
             {
-                string skinName = skin.ToString().ToLowerInvariant();
+                string skinName = skin.ToString().ToLower();
                 content.Load<TextureData>(root + "textures/button_" + skinName + "_md");
             }
             yield return 0;

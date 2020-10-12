@@ -22,13 +22,15 @@
   </PropertyGroup>
   
   <ItemGroup Condition=" '$(Configuration)' != 'Web' ">
-    <PackageReference Include="MonoGame.Framework.Portable" Version="3.7.1.189" />
+    <PackageReference Include="MonoGame.Framework.Portable" Version="3.7.1.189" /> 
+    <PackageReference Include="LocomotorECS" Version="1.1.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Web' ">
     <PackageReference Include="Retyped.dom" Version="2.8.6733" />
     <PackageReference Include="Bridge" Version="17.6.0" />
-    <PackageReference Include="MonoGame.Framework.Bridge" Version="3.7.0.2" />
+    <PackageReference Include="MonoGame.Framework.Bridge" Version="3.7.0.2" /> 
+    <PackageReference Include="LocomotorECS-BridgeNet" Version="1.1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,10 +50,6 @@
     <None Remove="Content\**" />
     <None Remove="ECS\EntitySystems\Console\**" />
     <None Remove="obj\**" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\External\LocomotorECS\LocomotorECS.csproj" />
   </ItemGroup>
   
   <ItemGroup>

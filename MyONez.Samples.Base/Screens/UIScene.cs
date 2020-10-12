@@ -4,22 +4,21 @@
 
     using System.Collections.Generic;
 
-    using GeonBit.UI;
-    using GeonBit.UI.Utils;
-    using GeonBit.UI.Animators;
-    using GeonBit.UI.ECS.Components;
-    using GeonBit.UI.Entities;
-    using GeonBit.UI.Entities.TextValidators;
-    using GeonBit.UI.Utils.Forms;
+    using FaceUI;
+    using FaceUI.Animators;
+    using FaceUI.DataTypes;
+    using FaceUI.Entities;
+    using FaceUI.Entities.TextValidators;
+    using FaceUI.Utils;
+    using FaceUI.Utils.Forms;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using MyONez.AdditionalContent.FaceUI.ECS.Components;
     using MyONez.Graphics.Renderers;
     using MyONez.Graphics.ResolutionPolicy;
     using MyONez.Samples.Base.Utils;
-
-    using StyleProperty = GeonBit.UI.DataTypes.StyleProperty;
 
     #endregion
 

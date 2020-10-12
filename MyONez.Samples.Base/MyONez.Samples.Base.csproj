@@ -37,10 +37,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\External\BrainAI\BrainAI.csproj" />
-    <ProjectReference Include="..\External\GeonBit.UI\GeonBit.UI.csproj">
-      <Aliases></Aliases>
-    </ProjectReference>
     <ProjectReference Include="..\MyONez.AdditionalContent\MyONez.AdditionalContent.csproj" />
     <ProjectReference Include="..\MyONez\MyONez.csproj" />
   </ItemGroup>

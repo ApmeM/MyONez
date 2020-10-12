@@ -1,6 +1,6 @@
-﻿namespace GeonBit.UI.ECS.Components
+﻿namespace MyONez.AdditionalContent.FaceUI.ECS.Components
 {
-    using GeonBit.UI.Entities;
+    using global::FaceUI.Entities;
 
     using LocomotorECS;
 

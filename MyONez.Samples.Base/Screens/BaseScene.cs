@@ -4,13 +4,13 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using GeonBit.UI;
-    using GeonBit.UI.ECS.Components;
-    using GeonBit.UI.ECS.EntitySystems;
-    using GeonBit.UI.Entities;
+    using FaceUI;
+    using FaceUI.Entities;
 
     using Microsoft.Xna.Framework;
 
+    using MyONez.AdditionalContent.FaceUI.ECS.Components;
+    using MyONez.AdditionalContent.FaceUI.ECS.EntitySystems;
     using MyONez.AdditionalContent.SceneTransitions;
     using MyONez.ECS;
     using MyONez.ECS.Components;

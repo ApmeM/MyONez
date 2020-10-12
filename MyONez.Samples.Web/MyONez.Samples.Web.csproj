@@ -6,7 +6,8 @@
     <Configurations>Web</Configurations>
   </PropertyGroup>
   
-  <ItemGroup>
+  <ItemGroup> 
+    <PackageReference Include="FaceUI.Content" Version="2.0.0" />
     <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
     <PackageReference Include="MonoGame.Framework.Bridge" Version="3.7.0.2" />
     <PackageReference Include="Retyped.dom" Version="2.8.6733" />
@@ -33,7 +34,6 @@
   <ItemGroup>
     <MonoGameContentReference Include="..\MyONez\Content\Content.mgcb" Link="Content\BaseContent.mgcb" />
     <MonoGameContentReference Include="..\MyONez.AdditionalContent\Content\Content.mgcb" Link="Content\AdditionalContent.mgcb" />
-    <MonoGameContentReference Include="..\External\GeonBit.UI\GeonBit.UI\GeonBit.UI\Content\Content.mgcb" Link="Content\GeonBitContent.mgcb" />
     <MonoGameContentReference Include="..\MyONez.Samples.Base\Content\Content.mgcb" Link="Content\Content.mgcb" />
   </ItemGroup>
 

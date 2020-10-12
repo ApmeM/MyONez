@@ -15,7 +15,8 @@
     <None Remove="obj\**" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup> 
+    <PackageReference Include="FaceUI.Content" Version="2.0.0" />
     <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
     <PackageReference Include="MonoGame.Framework.Portable" version="3.7.1.189" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" version="3.7.1.189" />
@@ -29,7 +30,6 @@
   <ItemGroup>
     <MonoGameContentReference Include="..\MyONez\Content\Content.mgcb" Link="Content\BaseContent.mgcb" />
     <MonoGameContentReference Include="..\MyONez.AdditionalContent\Content\Content.mgcb" Link="Content\AdditionalContent.mgcb" />
-    <MonoGameContentReference Include="..\External\GeonBit.UI\GeonBit.UI\GeonBit.UI\Content\Content.mgcb" Link="Content\GeonBitContent.mgcb" />
     <MonoGameContentReference Include="..\MyONez.Samples.Base\Content\Content.mgcb" Link="Content\Content.mgcb" />
   </ItemGroup>
 

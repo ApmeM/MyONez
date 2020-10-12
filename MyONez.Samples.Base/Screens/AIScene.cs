@@ -6,8 +6,6 @@
     using System.Collections.Generic;
 
     using BrainAI.AI.FSM;
-    using BrainAI.ECS.Components;
-    using BrainAI.ECS.EntitySystems;
     using BrainAI.Pathfinding.AStar;
 
     using LocomotorECS;
@@ -16,17 +14,16 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using MyONez.AdditionalContent.BrainAI.Components;
+    using MyONez.AdditionalContent.BrainAI.EntitySystems;
     using MyONez.AdditionalContent.SceneTransitions;
     using MyONez.ECS.Components;
     using MyONez.ECS.EntitySystems;
     using MyONez.ECS.EntitySystems.VirtualInput;
     using MyONez.Graphics;
-    using MyONez.Graphics.Cameras;
     using MyONez.Graphics.Drawable;
-    using MyONez.Graphics.Meshes;
     using MyONez.Graphics.Renderers;
     using MyONez.Graphics.ResolutionPolicy;
-    using MyONez.Graphics.Transitions;
     using MyONez.Maths;
     using MyONez.Samples.Base.Utils;
 

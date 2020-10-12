@@ -18,13 +18,19 @@
   </PropertyGroup>
   
   <ItemGroup Condition=" '$(Configuration)' != 'Web' ">
-    <PackageReference Include="MonoGame.Framework.Portable" Version="3.7.1.189" />
+    <PackageReference Include="MonoGame.Framework.Portable" Version="3.7.1.189" /> 
+    <PackageReference Include="BrainAI" Version="2.1.0.0" />
+    <PackageReference Include="LocomotorECS" Version="1.1.0.0" />
+    <PackageReference Include="FaceUI" Version="2.0.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Web' ">
     <PackageReference Include="Retyped.dom" Version="2.8.6733" />
     <PackageReference Include="Bridge" Version="17.6.0" />
-    <PackageReference Include="MonoGame.Framework.Bridge" Version="3.7.0.2" />
+    <PackageReference Include="MonoGame.Framework.Bridge" Version="3.7.0.2" /> 
+    <PackageReference Include="BrainAI-BridgeNet" Version="2.1.0.0" />
+    <PackageReference Include="LocomotorECS-BridgeNet" Version="1.1.0.0" />
+    <PackageReference Include="FaceUI-BridgeNet" Version="2.0.0.0" />
   </ItemGroup>
   
   <ItemGroup>

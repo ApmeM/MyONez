@@ -4,15 +4,14 @@
 
     using System.Collections.Generic;
 
-    using GeonBit.UI.ECS.Components;
-    using GeonBit.UI.Entities;
+    using FaceUI.Entities;
 
     using Microsoft.Xna.Framework;
 
+    using MyONez.AdditionalContent.FaceUI.ECS.Components;
     using MyONez.AdditionalContent.RenderProcessors;
     using MyONez.Graphics.Renderers;
     using MyONez.Graphics.RenderProcessors;
-    using MyONez.Graphics.RenderProcessors.Impl;
     using MyONez.Graphics.ResolutionPolicy;
     using MyONez.Samples.Base.Utils;
 
