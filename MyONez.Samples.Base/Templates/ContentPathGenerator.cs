@@ -14,6 +14,13 @@ namespace MyONez.Samples.Base
 {
     class ContentPaths
     {
+		public static class AnimatedTiles
+		{
+			public const string desertpalacelamp = @"AnimatedTiles/desert-palace-lamp";
+			public const string desertpalacetiles = @"AnimatedTiles/desert-palace-tiles";
+			public const string desertpalace = @"AnimatedTiles/desert-palace";
+		}
+
 		public static class Basic
 		{
 			public const string moon = @"Basic/moon";

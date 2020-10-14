@@ -17,6 +17,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\MyONez.AdditionalContent\MyONez.AdditionalContent.csproj" />
     <ProjectReference Include="..\MyONez\MyONez.csproj" />
   </ItemGroup>
 </Project>

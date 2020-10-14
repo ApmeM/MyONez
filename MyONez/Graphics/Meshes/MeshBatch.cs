@@ -12,7 +12,7 @@
     {
         public readonly List<IMesh> Meshes = new List<IMesh>();
 
-        public void Draw(Texture2D texture, RectangleF destRect, RectangleF srcRect, Color color, float depth = 0)
+        public IMesh Draw(Texture2D texture, RectangleF destRect, RectangleF srcRect, Color color, float depth = 0)
         {
 #if SPRITE_BATCH
             var mesh = Pool<SpriteMesh>.Obtain();
@@ -21,6 +21,7 @@
 #endif
             mesh.Build(texture, destRect, srcRect, color, depth);
             this.Meshes.Add(mesh);
+            return mesh;
         }
 
         public void Clear()
