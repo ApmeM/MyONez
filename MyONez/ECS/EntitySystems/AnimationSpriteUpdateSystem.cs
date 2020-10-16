@@ -26,12 +26,7 @@
                 return;
             }
 
-            var sprite = entity.GetComponent<SpriteComponent>();
-            if (sprite == null)
-            {
-                sprite = new SpriteComponent();
-                entity.AddComponent(sprite);
-            }
+            var sprite = entity.GetOrCreateComponent<SpriteComponent>();
 
             if (animation.Animation != animation.ExecutingAnimation)
             {
