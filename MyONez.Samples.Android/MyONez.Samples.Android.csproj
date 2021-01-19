@@ -63,6 +63,9 @@
     <Reference Include="BrainAI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BrainAI.2.1.0\lib\netstandard2.0\BrainAI.dll</HintPath>
     </Reference>
+    <Reference Include="FateRandom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FateRandom.1.0.0\lib\netstandard2.0\FateRandom.dll</HintPath>
+    </Reference>
     <Reference Include="FaceUI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FaceUI.2.0.0\lib\netstandard2.0\FaceUI.dll</HintPath>
     </Reference>

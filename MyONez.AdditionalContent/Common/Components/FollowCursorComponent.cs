@@ -1,4 +1,4 @@
-﻿namespace MyONez.ECS.Components
+﻿namespace MyONez.AdditionalContent.Common.Components
 {
     using LocomotorECS;
 

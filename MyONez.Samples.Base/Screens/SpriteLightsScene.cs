@@ -1,8 +1,10 @@
 ﻿namespace MyONez.Samples.Base.Screens
 {
+    using FateRandom;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
+    using MyONez.AdditionalContent.Common.Components;
     using MyONez.AdditionalContent.RenderProcessors;
     using MyONez.ECS.Components;
     using MyONez.GlobalManagers.Tweens;
@@ -68,8 +70,8 @@
         {
             // random target to tween towards that is on screen
             var target = new Vector2(
-                Random.Range(50, this.SceneRenderTarget.Width - 100),
-                Random.Range(50, this.SceneRenderTarget.Height - 100));
+                Fate.GlobalFate.Range(50, this.SceneRenderTarget.Width - 100),
+                Fate.GlobalFate.Range(50, this.SceneRenderTarget.Height - 100));
 
             var entity = this.CreateEntity();
             entity.AddComponent(new SpriteComponent(texture));
@@ -78,14 +80,14 @@
             entity.AddComponent<ScaleComponent>().Scale = new Vector2(scale);
             entity.AddComponent<RenderLayerComponent>().Layer = SpriteLightRenderLayer;
 
-            if (Random.Chance(50))
+            if (Fate.GlobalFate.Chance(50))
             {
-                entity.AddComponent<ColorComponent>().Color = Random.NextColor();
+                entity.AddComponent<ColorComponent>().Color = this.RandomColor();
                 var cycler = entity.AddComponent(new ColorCyclerComponent());
-                cycler.WaveFunction = (ColorCyclerComponent.WaveFunctions)Random.Range(0, 5);
-                cycler.Offset = Random.NextFloat();
-                cycler.Frequency = Random.Range(0.6f, 1.5f);
-                cycler.Phase = Random.NextFloat();
+                cycler.WaveFunction = (ColorCyclerComponent.WaveFunctions)Fate.GlobalFate.Range(0, 5);
+                cycler.Offset = Fate.GlobalFate.NextFloat();
+                cycler.Frequency = Fate.GlobalFate.Range(0.6f, 1.5f);
+                cycler.Phase = Fate.GlobalFate.NextFloat();
             }
             else
             {
@@ -110,9 +112,9 @@
 
             // get a random point on screen and a random delay for the tweens
             var target = new Vector2(
-                Random.Range(50, this.SceneRenderTarget.Width - 100),
-                Random.Range(50, this.SceneRenderTarget.Height - 100));
-            var delay = Random.Range(0f, 1f);
+                Fate.GlobalFate.Range(50, this.SceneRenderTarget.Width - 100),
+                Fate.GlobalFate.Range(50, this.SceneRenderTarget.Height - 100));
+            var delay = Fate.GlobalFate.Range(0f, 1f);
 
             var transform = (PositionComponent)tween.Target;
             var nextTween = transform.TweenTo(target, 2);
@@ -121,7 +123,7 @@
             Core.Instance.GetGlobalManager<TweenGlobalManager>().StartTween(nextTween);
 
             // every so often add a scale tween
-            if (Random.Chance(60))
+            if (Fate.GlobalFate.Chance(60))
             {
                 var scale = transform.Entity.GetComponent<ScaleComponent>();
                 var scaleTween = scale.TweenTo(scale.Scale * 1.2f, 1);
@@ -132,13 +134,18 @@
             }
 
             // every so often change our color
-            if (Random.Chance(80))
+            if (Fate.GlobalFate.Chance(80))
             {
                 var color = transform.Entity.GetOrCreateComponent<ColorComponent>();
-                var colorTween = color.TweenTo(Random.NextColor(), 2f);
+                var colorTween = color.TweenTo(this.RandomColor(), 2f);
                 colorTween.Delay = delay;
                 Core.Instance.GetGlobalManager<TweenGlobalManager>().StartTween(colorTween);
             }
+        }
+
+        private Color RandomColor()
+        {
+            return new Color(Fate.GlobalFate.NextFloat(), Fate.GlobalFate.NextFloat(), Fate.GlobalFate.NextFloat());
         }
     }
 }

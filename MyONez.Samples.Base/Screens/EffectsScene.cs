@@ -2,24 +2,19 @@
 {
     #region Using Directives
 
-    using System.Collections;
     using System.Collections.Generic;
 
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.AdditionalContent.RenderProcessors;
     using MyONez.ECS.Components;
     using MyONez.Graphics;
     using MyONez.Graphics.Drawable;
     using MyONez.Graphics.Materials;
     using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.RenderProcessors.Impl;
     using MyONez.Graphics.ResolutionPolicy;
     using MyONez.Samples.Base.Utils;
-
-    using Random = MyONez.Maths.Random;
 
     #endregion
 

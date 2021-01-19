@@ -1,4 +1,4 @@
-﻿namespace MyONez.ECS.Components
+﻿namespace MyONez.AdditionalContent.Common.Components
 {
     using LocomotorECS;
 
@@ -9,7 +9,7 @@
     public class FollowCameraComponent : Component
     {
         internal Vector2 DesiredPosition;
-        
+
         /// <summary>
         ///     how fast the camera closes the distance to the target position
         /// </summary>

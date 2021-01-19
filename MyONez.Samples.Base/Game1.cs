@@ -4,11 +4,7 @@ namespace MyONez.Samples.Base
 
     using MyONez.AdditionalContent.FaceUI.Utils;
     using MyONez.AdditionalContent.Scenes;
-    #region Using Directives
-
     using MyONez.Samples.Base.Screens;
-
-    #endregion
 
     /// <summary>
     ///     This is the main type for your game.

@@ -59,12 +59,8 @@ namespace MyONez.ECS
             this.AddEntitySystem(new InputGamePadUpdateSystem());
             this.AddEntitySystem(new InputKeyboardUpdateSystem());
             this.AddEntitySystem(new InputVirtualUpdateSystem());
-            this.AddEntitySystem(new FollowCursorUpdateSystem(this));
             this.AddEntitySystem(new CursorOverMouseSpriteUpdateSystem(this));
             this.AddEntitySystem(new CursorOverTouchSpriteUpdateSystem());
-            this.AddEntitySystem(new ColorCyclerUpdateSystem());
-            this.AddEntitySystem(new FollowCameraUpdateSystem());
-            this.AddEntitySystem(new CameraShakeUpdateSystem());
             this.AddEntitySystem(new MaterialEffectUpdateSystem());
             this.AddEntitySystem(new AnimationSpriteUpdateSystem());
             this.AddEntitySystem(new SpriteMeshGeneratorSystem());
@@ -73,8 +69,6 @@ namespace MyONez.ECS
             this.AddEntitySystemExecutionOrder<InputTouchUpdateSystem, InputVirtualUpdateSystem>();
             this.AddEntitySystemExecutionOrder<InputGamePadUpdateSystem, InputVirtualUpdateSystem>();
             this.AddEntitySystemExecutionOrder<InputKeyboardUpdateSystem, InputVirtualUpdateSystem>();
-            this.AddEntitySystemExecutionOrder<InputMouseUpdateSystem, FollowCursorUpdateSystem>();
-            this.AddEntitySystemExecutionOrder<InputTouchUpdateSystem, FollowCursorUpdateSystem>();
             this.AddEntitySystemExecutionOrder<InputMouseUpdateSystem, CursorOverMouseSpriteUpdateSystem>();
             this.AddEntitySystemExecutionOrder<InputTouchUpdateSystem, CursorOverTouchSpriteUpdateSystem>();
             this.AddEntitySystemExecutionOrder<AnimationSpriteUpdateSystem, SpriteMeshGeneratorSystem>();

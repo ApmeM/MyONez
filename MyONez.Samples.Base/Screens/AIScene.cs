@@ -7,7 +7,7 @@
 
     using BrainAI.AI.FSM;
     using BrainAI.Pathfinding.AStar;
-
+    using FateRandom;
     using LocomotorECS;
     using LocomotorECS.Matching;
 
@@ -16,6 +16,8 @@
 
     using MyONez.AdditionalContent.BrainAI.Components;
     using MyONez.AdditionalContent.BrainAI.EntitySystems;
+    using MyONez.AdditionalContent.Common.Components;
+    using MyONez.AdditionalContent.Common.EntitySystems;
     using MyONez.AdditionalContent.SceneTransitions;
     using MyONez.ECS.Components;
     using MyONez.ECS.EntitySystems;
@@ -28,7 +30,6 @@
     using MyONez.Samples.Base.Utils;
 
     using Point = BrainAI.Pathfinding.Point;
-    using Random = MyONez.Maths.Random;
 
     #endregion
 
@@ -101,6 +102,7 @@
             this.AddEntitySystem(new SnakeMoveSystem());
             this.AddEntitySystem(new SnakeGameOverSystem(map));
             this.AddEntitySystem(new SnakeArrowUpdateSystem(food));
+            this.AddEntitySystem(new FollowCameraUpdateSystem());
             this.AddEntitySystem(new SnakeFoodUpdateSystem(this, food, map));
 
             this.AddEntitySystemExecutionOrder<AIUpdateSystem, InputVirtualUpdateSystem>();
@@ -108,6 +110,7 @@
             this.AddEntitySystemExecutionOrder<SnakeControlSystem, SnakeMoveSystem>();
             this.AddEntitySystemExecutionOrder<SnakeMoveSystem, SnakeGameOverSystem>();
             this.AddEntitySystemExecutionOrder<SnakeMoveSystem, SnakeFoodUpdateSystem>();
+            this.AddEntitySystemExecutionOrder<SnakeMoveSystem, FollowCameraUpdateSystem>();
             this.AddEntitySystemExecutionOrder<SnakeMoveSystem, SnakeArrowUpdateSystem>();
         }
 
@@ -167,12 +170,12 @@
 
         public void ReLocateFood(MapComponent map, Entity food)
         {
-            var x = Random.NextInt(map.Map.Width - 2) + 1;
-            var y = Random.NextInt(map.Map.Height - 2) + 1;
+            var x = Fate.GlobalFate.NextInt(map.Map.Width - 2) + 1;
+            var y = Fate.GlobalFate.NextInt(map.Map.Height - 2) + 1;
             while (map.Map.Walls.Contains(new Point(x, y)))
             {
-                x = Random.NextInt(map.Map.Width - 2) + 1;
-                y = Random.NextInt(map.Map.Height - 2) + 1;
+                x = Fate.GlobalFate.NextInt(map.Map.Width - 2) + 1;
+                y = Fate.GlobalFate.NextInt(map.Map.Height - 2) + 1;
             }
 
             food.GetComponent<PositionComponent>().Position = new Vector2(x, y);
@@ -180,12 +183,12 @@
 
         public void AddWall(MapComponent map)
         {
-            var x = Random.NextInt(map.Map.Width - 2) + 1;
-            var y = Random.NextInt(map.Map.Height - 2) + 1;
+            var x = Fate.GlobalFate.NextInt(map.Map.Width - 2) + 1;
+            var y = Fate.GlobalFate.NextInt(map.Map.Height - 2) + 1;
             while (map.Map.Walls.Contains(new Point(x, y)))
             {
-                x = Random.NextInt(map.Map.Width - 2) + 1;
-                y = Random.NextInt(map.Map.Height - 2) + 1;
+                x = Fate.GlobalFate.NextInt(map.Map.Width - 2) + 1;
+                y = Fate.GlobalFate.NextInt(map.Map.Height - 2) + 1;
             }
             map.Map.Walls.Add(new Point(x, y));
         }
