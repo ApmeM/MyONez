@@ -6,8 +6,8 @@
     using Microsoft.Xna.Framework.Content.Pipeline;
     using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 
-    using MyONez.AdditionalContent.TiledMap.Models;
-    using MyONez.AdditionalContent.TiledMap.PipelineImporter;
+    using MyONez.Base.AdditionalStuff.TiledMap.Models;
+    using MyONez.Base.AdditionalStuff.TiledMap.PipelineImporter;
 
     [ContentTypeWriter]
     public class TiledMapWriter : ContentTypeWriter<TiledMap>

@@ -1,36 +1,44 @@
-MyONez aims to be a lightweight 2D framework that sits on top of MonoGame. It provides a solid base for you to build a 2D game on. Some of the many features it includes are:
+# Samples
 
-- Scene/Entity/Component system with Component render layer tracking and optional entity systems (an implementation that operates on a group of entities that share a specific set of components)
-- efficient coroutines for breaking up large tasks across multiple frames or animation timing (Core.startCoroutine)
-- extensible rendering system. Add/remove renderers and post processors as needed. Renderables are sorted by render layer first then layer depth for maximum flexibility out of the box.
-- tween system. Tween any int/float/Vector/quaternion/color/rectangle field or property.
-- sprites with sprite animations
-- scheduler for delayed and repeating tasks
-- per-scene content managers. Load your scene-specific content then forget about it. We will unload it for you when you change scenes.
-- customizable Scene transition system with several built in transitions
-- [tons more stuff](MyONez.Samples.Base/Samples.md)
+Samples show how to work with the various subsystems and features available in project.
 
+# Setup
 
-Systems
-==========
+In order to get them running happily you need to do the following:
 
-- [Core](MyONez/Core.md)
-- [Rendering](MyONez/Graphics/README.md)
-- [Scene Transitions](MyONez/Graphics/Transitions/README.md)
-- [Samples](MyONez.Samples.Base/Samples.md)
+- clone the repo and ensure the subrepository is also updated
+- open .sln and build that first.
 
+To run samples on android device you will also need to install android sdk
 
-Setup
-==========
-### Install as a submodule:
+## Auto Generating Content Paths
 
-- create a `Monogame Cross Platform Desktop Project`
-- clone or download this repository
-- add the `MyONez/MyONez.csproj` project to your solution and add a reference to it in your main project
-- make your main Game class (`Game1.cs` in a default project) subclass `MyONez.Core`
-- add <MonoGameContentReference Include="..\MyONez\Content\Content.mgcb" Link="Content\BaseContent.mgcb" /> reference to have your project.
+Samples includes a T4 template that will generate a static `ContentPaths` class for you that contains the names of all of the files processed by the Pipeline Tool. 
+This lets you change code like the following:
 
-Credits
-==========
+```csharp
+// before using the ContentPathGenerator you have strings to represent your content
+var tex = content.Load<Texture2D>( "Textures/Scene1/blueBird" );
+
+// after using the ContentPathGenerator you will have compile-tile safety for your content
+var tex = content.Load<Texture2D>( ContentPaths.Textures.Scene1.blueBird" );
+```
+
+The big advantage to using it is that you will never have a reference to content that doesnt actually exist in your project. You get compile-time checking of all your content. Setup is as follows:
+
+- copy the ContentPathGenerator.tt file into the root of your project (you could place it elsewhere and then modify the `sourceFolder` variable in the file.
+- in the properites pane for the file set the "Custom Tool" to "TextTemplatingFileGenerator"
+- right click the file and choose Tools -> Process T4 Template to generate the Content class
+
+# Additional stuff
+
+In the [AdditionalStuff](MyONez.Base/AdditionalStuff) folder there is also some more examples of what this engine can do. 
+
+# Assets License
+
+Unless otherwise noted, the assets in the Samples repo project are not MIT licensed. 
+They should not be used in any project. Most are of unknown copyright/origin so assume they are all off limits and use them only for your own personal amusement.
+
+# Credits
 
 - [**Nez**](https://github.com/prime31/Nez) - ![GitHub stars](https://img.shields.io/github/stars/prime31/Nez.svg) - 2D game engine.

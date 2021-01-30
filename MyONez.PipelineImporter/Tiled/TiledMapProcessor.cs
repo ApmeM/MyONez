@@ -12,7 +12,7 @@
     using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
     using Microsoft.Xna.Framework.Content.Pipeline.Processors;
 
-    using MyONez.AdditionalContent.TiledMap.Models;
+    using MyONez.Base.AdditionalStuff.TiledMap.Models;
     using MyONez.PipelineImporter.Tiled.ImportModels;
     using MyONez.PipelineImporter.Utils;
 

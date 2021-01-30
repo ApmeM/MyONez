@@ -14,9 +14,9 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.Content.Pipeline.Portable" version="3.7.1.189" />
     <PackageReference Include="MonoGame.Framework.Portable" version="3.7.1.189" />
-  </ItemGroup>
+  </ItemGroup> 
   
   <ItemGroup>
-    <ProjectReference Include="..\MyONez.AdditionalContent\MyONez.AdditionalContent.csproj" />
+    <ProjectReference Include="..\MyONez.Base\MyONez.Base.csproj" />
   </ItemGroup>
 </Project>
