@@ -6,9 +6,9 @@
     using Microsoft.Xna.Framework;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.Graphics.Transitions;
-    using MyONez.Maths.Easing;
-    using MyONez.XnaManagers;
+    using SpineEngine.Graphics.Transitions;
+    using SpineEngine.Maths.Easing;
+    using SpineEngine.XnaManagers;
 
     public class CinematicLetterboxTransition : SceneTransition
     {

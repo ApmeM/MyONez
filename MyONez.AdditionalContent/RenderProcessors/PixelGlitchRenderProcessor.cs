@@ -3,8 +3,9 @@
     using Microsoft.Xna.Framework;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.ECS;
-    using MyONez.Graphics.RenderProcessors;
+    using SpineEngine;
+    using SpineEngine.ECS;
+    using SpineEngine.Graphics.RenderProcessors;
 
     public class PixelGlitchRenderProcessor : RenderProcessor<PixelGlitchEffect>, IScreenResolutionChangedListener
     {

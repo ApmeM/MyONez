@@ -8,8 +8,8 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    using MyONez.Graphics.Meshes;
-    using MyONez.Maths;
+    using SpineEngine.Graphics.Meshes;
+    using SpineEngine.Maths;
 
     public class MeshBatchWrapper : ISpriteBatchWrapper
     {

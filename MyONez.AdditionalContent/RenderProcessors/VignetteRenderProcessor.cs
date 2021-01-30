@@ -3,8 +3,8 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.ECS;
-    using MyONez.Graphics.RenderProcessors;
+    using SpineEngine.ECS;
+    using SpineEngine.Graphics.RenderProcessors;
 
     public class VignetteRenderProcessor : RenderProcessor<VignetteEffect>
     {

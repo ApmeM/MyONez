@@ -11,10 +11,10 @@
 
     using MyONez.AdditionalContent.TiledMap.ECS.Components;
     using MyONez.AdditionalContent.TiledMap.Models;
-    using MyONez.ECS;
-    using MyONez.ECS.Components;
-    using MyONez.Graphics.Meshes;
-    using MyONez.Maths;
+    using SpineEngine.ECS;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.Graphics.Meshes;
+    using SpineEngine.Maths;
 
     public class TiledMapMeshGeneratorSystem : EntityProcessingSystem
     {

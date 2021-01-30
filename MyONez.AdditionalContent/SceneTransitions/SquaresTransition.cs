@@ -6,10 +6,11 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.GlobalManagers.Coroutines;
-    using MyONez.Graphics.Transitions;
-    using MyONez.Maths.Easing;
-    using MyONez.XnaManagers;
+    using SpineEngine;
+    using SpineEngine.GlobalManagers.Coroutines;
+    using SpineEngine.Graphics.Transitions;
+    using SpineEngine.Maths.Easing;
+    using SpineEngine.XnaManagers;
 
     public class SquaresTransition : SceneTransition
     {

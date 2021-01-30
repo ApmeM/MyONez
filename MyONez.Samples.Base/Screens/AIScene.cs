@@ -19,17 +19,18 @@
     using MyONez.AdditionalContent.Common.Components;
     using MyONez.AdditionalContent.Common.EntitySystems;
     using MyONez.AdditionalContent.SceneTransitions;
-    using MyONez.ECS.Components;
-    using MyONez.ECS.EntitySystems;
-    using MyONez.ECS.EntitySystems.VirtualInput;
-    using MyONez.Graphics;
-    using MyONez.Graphics.Drawable;
-    using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.ResolutionPolicy;
-    using MyONez.Maths;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.ECS.EntitySystems;
+    using SpineEngine.ECS.EntitySystems.VirtualInput;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.Drawable;
+    using SpineEngine.Graphics.Renderers;
+    using SpineEngine.Graphics.ResolutionPolicy;
+    using SpineEngine.Maths;
     using MyONez.Samples.Base.Utils;
 
     using Point = BrainAI.Pathfinding.Point;
+    using SpineEngine;
 
     #endregion
 

@@ -2,7 +2,7 @@ namespace MyONez.AdditionalContent.Materials
 {
     using Microsoft.Xna.Framework.Graphics;
 
-    using MyONez.Graphics.Materials;
+    using SpineEngine.Graphics.Materials;
 
     public class MaterialDefaults
     {

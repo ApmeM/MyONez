@@ -11,10 +11,11 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.FaceUI.ECS.Components;
-    using MyONez.ECS.Components;
-    using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.ResolutionPolicy;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.Graphics.Renderers;
+    using SpineEngine.Graphics.ResolutionPolicy;
     using MyONez.Samples.Base.Utils;
+    using SpineEngine;
 
     #endregion
 

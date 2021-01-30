@@ -4,10 +4,11 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.ECS;
-    using MyONez.Graphics;
-    using MyONez.Graphics.Materials;
-    using MyONez.Graphics.RenderProcessors;
+    using SpineEngine;
+    using SpineEngine.ECS;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.Materials;
+    using SpineEngine.Graphics.RenderProcessors;
 
     public class PixelMosaicRenderProcessor : RenderProcessor<MultiTextureOverlayEffect>, IScreenResolutionChangedListener
     {

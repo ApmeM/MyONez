@@ -6,8 +6,8 @@
     using LocomotorECS;
     using LocomotorECS.Matching;
     using MyONez.AdditionalContent.Common.Components;
-    using MyONez.ECS;
-    using MyONez.ECS.Components;
+    using SpineEngine.ECS;
+    using SpineEngine.ECS.Components;
 
     public class FollowCursorUpdateSystem : EntityProcessingSystem
     {

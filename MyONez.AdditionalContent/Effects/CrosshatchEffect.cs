@@ -2,7 +2,7 @@
 {
     using Microsoft.Xna.Framework.Graphics;
 
-    using MyONez.Maths;
+    using SpineEngine.Maths;
 
     public class CrosshatchEffect : Effect
     {

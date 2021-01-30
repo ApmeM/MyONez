@@ -12,10 +12,11 @@
 
     using MyONez.AdditionalContent.FaceUI.ECS.Components;
     using MyONez.AdditionalContent.SceneTransitions;
-    using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.ResolutionPolicy;
-    using MyONez.Graphics.Transitions;
+    using SpineEngine.Graphics.Renderers;
+    using SpineEngine.Graphics.ResolutionPolicy;
+    using SpineEngine.Graphics.Transitions;
     using MyONez.Samples.Base.Utils;
+    using SpineEngine;
 
     #endregion
 

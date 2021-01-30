@@ -4,8 +4,9 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.ECS;
-    using MyONez.Graphics.RenderProcessors;
+    using SpineEngine;
+    using SpineEngine.ECS;
+    using SpineEngine.Graphics.RenderProcessors;
 
     public class BloomRenderProcessor : RenderProcessor, IScreenResolutionChangedListener
     {

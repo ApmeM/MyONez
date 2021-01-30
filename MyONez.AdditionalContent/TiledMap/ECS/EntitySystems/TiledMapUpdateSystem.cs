@@ -8,7 +8,7 @@
 
     using MyONez.AdditionalContent.TiledMap.ECS.Components;
     using MyONez.AdditionalContent.TiledMap.Models;
-    using MyONez.Maths;
+    using SpineEngine.Maths;
 
     public class TiledMapUpdateSystem : EntityProcessingSystem
     {

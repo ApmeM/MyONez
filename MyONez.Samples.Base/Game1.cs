@@ -5,6 +5,7 @@ namespace MyONez.Samples.Base
     using MyONez.AdditionalContent.FaceUI.Utils;
     using MyONez.AdditionalContent.Scenes;
     using MyONez.Samples.Base.Screens;
+    using SpineEngine;
 
     /// <summary>
     ///     This is the main type for your game.

@@ -6,9 +6,9 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.Graphics.Transitions;
-    using MyONez.Maths.Easing;
-    using MyONez.XnaManagers;
+    using SpineEngine.Graphics.Transitions;
+    using SpineEngine.Maths.Easing;
+    using SpineEngine.XnaManagers;
 
     /// <summary>
     ///     Uses a texture (TransitionTexture) to control a wipe animation. The blue channel of the texture determines if color

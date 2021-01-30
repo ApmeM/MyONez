@@ -4,10 +4,10 @@
     using System.Collections;
 
     using Microsoft.Xna.Framework;
-
-    using MyONez.Graphics;
-    using MyONez.Graphics.Transitions;
-    using MyONez.Maths.Easing;
+    using SpineEngine;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.Transitions;
+    using SpineEngine.Maths.Easing;
 
     public class TransformTransition : SceneTransition
     {

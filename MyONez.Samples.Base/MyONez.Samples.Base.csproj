@@ -19,12 +19,14 @@
   
   <ItemGroup Condition=" '$(Configuration)' != 'Web' ">
     <PackageReference Include="MonoGame.Framework.Portable" Version="3.7.1.189" />
+    <PackageReference Include="SpineEngine" Version="1.0.2.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(Configuration)' == 'Web' ">
     <PackageReference Include="Retyped.dom" Version="2.8.6733" />
     <PackageReference Include="Bridge" Version="17.6.0" />
     <PackageReference Include="MonoGame.Framework.Bridge" Version="3.7.0.2" />
+    <PackageReference Include="SpineEngine-BridgeNet" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,7 +40,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\MyONez.AdditionalContent\MyONez.AdditionalContent.csproj" />
-    <ProjectReference Include="..\MyONez\MyONez.csproj" />
   </ItemGroup>
   
   <ItemGroup>

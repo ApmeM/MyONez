@@ -2,7 +2,7 @@
 {
     using Microsoft.Xna.Framework.Graphics;
 
-    using MyONez.Graphics.Transitions;
+    using SpineEngine.Graphics.Transitions;
 
     public class WindEffect : Effect, IProgressEffect
     {

@@ -3,7 +3,7 @@
     using LocomotorECS;
 
     using MyONez.AdditionalContent.TiledMap.Models;
-    using MyONez.Debug;
+    using SpineEngine.Debug;
 
     public class TiledMapComponent : Component
     {

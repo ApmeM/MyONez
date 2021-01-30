@@ -10,10 +10,11 @@
 
     using MyONez.AdditionalContent.FaceUI.ECS.Components;
     using MyONez.AdditionalContent.RenderProcessors;
-    using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.RenderProcessors;
-    using MyONez.Graphics.ResolutionPolicy;
+    using SpineEngine.Graphics.Renderers;
+    using SpineEngine.Graphics.RenderProcessors;
+    using SpineEngine.Graphics.ResolutionPolicy;
     using MyONez.Samples.Base.Utils;
+    using SpineEngine;
 
     #endregion
 

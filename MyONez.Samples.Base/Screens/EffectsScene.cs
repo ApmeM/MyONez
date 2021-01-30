@@ -8,13 +8,14 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.ECS.Components;
-    using MyONez.Graphics;
-    using MyONez.Graphics.Drawable;
-    using MyONez.Graphics.Materials;
-    using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.ResolutionPolicy;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.Drawable;
+    using SpineEngine.Graphics.Materials;
+    using SpineEngine.Graphics.Renderers;
+    using SpineEngine.Graphics.ResolutionPolicy;
     using MyONez.Samples.Base.Utils;
+    using SpineEngine;
 
     #endregion
 

@@ -4,9 +4,10 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.ECS;
-    using MyONez.Graphics;
-    using MyONez.Graphics.RenderProcessors;
+    using SpineEngine;
+    using SpineEngine.ECS;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.RenderProcessors;
 
     /// <summary>
     ///     post processor to assist with making blended poly lights. Usage is as follows:

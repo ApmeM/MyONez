@@ -7,8 +7,8 @@
 
     using Microsoft.Xna.Framework;
     using MyONez.AdditionalContent.Common.Components;
-    using MyONez.ECS.Components;
-    using MyONez.Maths;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.Maths;
 
     /// <summary>
     ///     Takes a ColorComponent and cycles the color using different wave forms. 

@@ -4,7 +4,7 @@
 
     using Microsoft.Xna.Framework;
 
-    using MyONez.Graphics.Cameras;
+    using SpineEngine.Graphics.Cameras;
 
     public class FollowCameraComponent : Component
     {

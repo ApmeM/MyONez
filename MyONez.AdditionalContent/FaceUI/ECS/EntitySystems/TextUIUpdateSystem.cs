@@ -10,7 +10,7 @@
     using Microsoft.Xna.Framework;
 
     using MyONez.AdditionalContent.FaceUI.ECS.Components;
-    using MyONez.ECS.Components;
+    using SpineEngine.ECS.Components;
 
     using Entity = LocomotorECS.Entity;
 

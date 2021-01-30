@@ -6,15 +6,16 @@
 
     using MyONez.AdditionalContent.Common.Components;
     using MyONez.AdditionalContent.RenderProcessors;
-    using MyONez.ECS.Components;
-    using MyONez.GlobalManagers.Tweens;
-    using MyONez.GlobalManagers.Tweens.Interfaces;
-    using MyONez.Graphics;
-    using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.ResolutionPolicy;
-    using MyONez.Maths;
-    using MyONez.Maths.Easing;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.GlobalManagers.Tweens;
+    using SpineEngine.GlobalManagers.Tweens.Interfaces;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.Renderers;
+    using SpineEngine.Graphics.ResolutionPolicy;
+    using SpineEngine.Maths;
+    using SpineEngine.Maths.Easing;
     using MyONez.Samples.Base.Utils;
+    using SpineEngine;
 
     [SampleScene(
         "Sprite Lights",

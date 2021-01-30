@@ -12,11 +12,12 @@
     using MyONez.AdditionalContent.FaceUI.ECS.Components;
     using MyONez.AdditionalContent.FaceUI.ECS.EntitySystems;
     using MyONez.AdditionalContent.SceneTransitions;
-    using MyONez.ECS;
-    using MyONez.ECS.Components;
-    using MyONez.GlobalManagers.Tweens;
-    using MyONez.Graphics.Renderers;
+    using SpineEngine.ECS;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.GlobalManagers.Tweens;
+    using SpineEngine.Graphics.Renderers;
     using MyONez.Samples.Base.Utils;
+    using SpineEngine;
 
     public abstract class BaseScene : Scene
     {

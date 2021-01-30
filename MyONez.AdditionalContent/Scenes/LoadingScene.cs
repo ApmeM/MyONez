@@ -9,13 +9,13 @@
     using LocomotorECS.Matching;
 
     using Microsoft.Xna.Framework;
-
-    using MyONez.ECS;
-    using MyONez.ECS.Components;
-    using MyONez.Graphics;
-    using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.ResolutionPolicy;
-    using MyONez.Maths;
+    using SpineEngine;
+    using SpineEngine.ECS;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.Renderers;
+    using SpineEngine.Graphics.ResolutionPolicy;
+    using SpineEngine.Maths;
 
     public class LoadingScene<T> : Scene where T: Scene, new()
     {

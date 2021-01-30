@@ -27,7 +27,7 @@
                 return;
             }
 
-            if (args[1].ToLower() == "help")
+            if (args.Length > 1 && args[1].ToLower() == "help")
             {
                 Console.WriteLine($"{action.Name} - {action.Description}");
                 Console.WriteLine(action.Help);

@@ -1,7 +1,8 @@
 ﻿namespace MyONez.AdditionalContent.RenderProcessors
 {
     using MyONez.AdditionalContent.Effects;
-    using MyONez.Graphics.RenderProcessors;
+    using SpineEngine;
+    using SpineEngine.Graphics.RenderProcessors;
 
     public class ScanlinesRenderProcessor : RenderProcessor<ScanlinesEffect>
     {

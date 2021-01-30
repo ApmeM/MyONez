@@ -7,7 +7,7 @@
 
     using Microsoft.Xna.Framework;
     using MyONez.AdditionalContent.Common.Components;
-    using MyONez.Maths;
+    using SpineEngine.Maths;
 
     public class FollowCameraUpdateSystem : EntityProcessingSystem
     {

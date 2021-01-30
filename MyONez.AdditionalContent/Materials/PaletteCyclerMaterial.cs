@@ -3,7 +3,8 @@
     using System;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.Graphics.Materials;
+    using SpineEngine;
+    using SpineEngine.Graphics.Materials;
 
     public class PaletteCyclerMaterial : Material<PaletteCyclerEffect>
     {

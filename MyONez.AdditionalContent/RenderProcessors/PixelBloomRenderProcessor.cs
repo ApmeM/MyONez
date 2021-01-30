@@ -3,8 +3,8 @@
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
 
-    using MyONez.Graphics;
-    using MyONez.Graphics.RenderProcessors.Impl;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.RenderProcessors.Impl;
 
     public class PixelBloomRenderProcessor : BloomRenderProcessor
     {

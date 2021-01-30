@@ -14,8 +14,8 @@
 
     using MyONez.AdditionalContent.FaceUI.ECS.Components;
     using MyONez.AdditionalContent.FaceUI.Utils;
-    using MyONez.ECS;
-    using MyONez.ECS.Components;
+    using SpineEngine.ECS;
+    using SpineEngine.ECS.Components;
 
     public class UIUpdateSystem : EntityProcessingSystem, IScreenResolutionChangedListener
     {

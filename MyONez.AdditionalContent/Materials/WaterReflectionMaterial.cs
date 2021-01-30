@@ -7,10 +7,11 @@
     using Microsoft.Xna.Framework.Graphics;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.Graphics;
-    using MyONez.Graphics.Cameras;
-    using MyONez.Graphics.Materials;
-    using MyONez.Graphics.Renderers;
+    using SpineEngine;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.Cameras;
+    using SpineEngine.Graphics.Materials;
+    using SpineEngine.Graphics.Renderers;
 
     public class WaterReflectionMaterial : Material<WaterReflectionEffect>
     {

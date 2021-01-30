@@ -3,9 +3,9 @@
     using Microsoft.Xna.Framework;
 
     using MyONez.AdditionalContent.Effects;
-    using MyONez.ECS;
-    using MyONez.Graphics;
-    using MyONez.Graphics.RenderProcessors;
+    using SpineEngine.ECS;
+    using SpineEngine.Graphics;
+    using SpineEngine.Graphics.RenderProcessors;
 
     /// <summary>
     ///     post processor to assist with making blended sprite lights. Usage is as follows:

@@ -5,7 +5,7 @@
 
     using Microsoft.Xna.Framework;
 
-    using MyONez.Maths;
+    using SpineEngine.Maths;
 
     public class TiledMap
     {

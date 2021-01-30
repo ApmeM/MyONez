@@ -5,11 +5,11 @@
     using MyONez.AdditionalContent.TiledMap.ECS.Components;
     using MyONez.AdditionalContent.TiledMap.ECS.EntitySystems;
     using MyONez.AdditionalContent.TiledMap.Models;
-    using MyONez.ECS.Components;
-    using MyONez.Graphics.Renderers;
-    using MyONez.Graphics.ResolutionPolicy;
+    using SpineEngine.ECS.Components;
+    using SpineEngine.Graphics.Renderers;
+    using SpineEngine.Graphics.ResolutionPolicy;
     using MyONez.Samples.Base.Utils;
-    using MyONez.Utils;
+    using SpineEngine.Utils;
 
     /// <summary>
     /// Tiled map import that includes animated tiles from multiple different tileset images
