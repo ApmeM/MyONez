@@ -141,9 +141,7 @@
         private static void LoadDefaultStyles(ref StyleSheet sheet, string entityName, string themeRoot, ContentManager content)
         {
             string stylesheetBase = themeRoot + "styles/" + entityName;
-            content.Load<DefaultStyles>(stylesheetBase + "-Default");
-            content.Load<DefaultStyles>(stylesheetBase + "-MouseHover");
-            content.Load<DefaultStyles>(stylesheetBase + "-MouseDown");
+            content.Load<DefaultStylesList>(stylesheetBase);
         }
     }
 }

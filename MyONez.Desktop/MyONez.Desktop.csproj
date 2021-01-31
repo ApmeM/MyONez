@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup> 
-    <PackageReference Include="FaceUI.Content" Version="2.0.0" />
-    <PackageReference Include="SpineEngine.Content" Version="1.0.2" />
+    <PackageReference Include="FaceUI.Content" Version="2.1.0" />
+    <PackageReference Include="SpineEngine.Content" Version="1.1.0" />
     <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
     <PackageReference Include="MonoGame.Framework.Portable" version="3.7.1.189" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" version="3.7.1.189" />
