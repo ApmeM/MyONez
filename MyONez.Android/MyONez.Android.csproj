@@ -74,7 +74,7 @@
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\MyONez\packages\MonoGame.Framework.Android.3.7.1.189\lib\MonoAndroid\MonoGame.Framework.dll</HintPath>
+      <HintPath>..\packages\MonoGame.Framework.Android.3.7.1.189\lib\MonoAndroid\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="OpenTK-1.0" />
@@ -127,15 +127,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
-  <Import Project="..\..\MyONez\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets" Condition="Exists('..\..\MyONez\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\MyONez\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\MyONez\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets'))" />
+    <Error Condition="!Exists('..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets'))" />
     <Error Condition="!Exists('..\packages\FaceUI.Content.2.1.0\build\FaceUI.Content.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\FaceUI.Content.2.1.0\build\FaceUI.Content.targets'))" />
     <Error Condition="!Exists('..\packages\SpineEngine.Content.1.1.0\build\SpineEngine.Content.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SpineEngine.Content.1.1.0\build\SpineEngine.Content.targets'))" />
   </Target>
+  <Import Project="..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets" Condition="Exists('..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" />
   <Import Project="..\packages\FaceUI.Content.2.1.0\build\FaceUI.Content.targets" Condition="Exists('..\packages\FaceUI.Content.2.1.0\build\FaceUI.Content.targets')" />
   <Import Project="..\packages\SpineEngine.Content.1.1.0\build\SpineEngine.Content.targets" Condition="Exists('..\packages\SpineEngine.Content.1.1.0\build\SpineEngine.Content.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

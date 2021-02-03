@@ -1,0 +1,61 @@
+name: Build
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+    branches:
+      - 'master'
+  pull_request:
+    paths-ignore:
+      - '**.md' 
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v1
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108 
+        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Setup msbuild
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Setup nuget
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: 'latest'
+
+    - name: Restore packages with nuget
+      run: |
+        msbuild ./MyONez.sln /restore /property:Configuration=Release
+        msbuild ./MyONez.sln /restore /property:Configuration=Web
+
+    - name: Build release with msbuild
+      run: msbuild ./MyONez.PipelineImporter/MyONez.PipelineImporter.csproj /property:Configuration=Release
+
+    - name: Build web with msbuild
+      run: msbuild ./MyONez.sln /property:Configuration=Web
+
+    - name: Commit report
+      run: |
+        git config --global user.email "autodeploy@noreply.github.com"
+        git config --global user.name "Autodeploy"
+        git checkout gh-pages
+        git merge --no-ff --no-commit origin/master
+        mv ./MyONez.Browser/bin/Web/net48/index.html ./docs/index.html -force
+        mv ./MyONez.Browser/bin/Web/net48/web.config ./docs/web.config -force
+        mv ./MyONez.Browser/bin/Web/net48/bridge ./docs/bridge -force
+        mv ./MyONez.Browser/bin/Web/net48/Content ./docs/Content -force
+        git commit -am "Merge master into gh-pages"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ApmeM/MyONez.git          
+        git push
