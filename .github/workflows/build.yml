@@ -46,7 +46,7 @@ jobs:
     - name: Build web with msbuild
       run: msbuild ./MyONez.sln /property:Configuration=Web
 
-    - name: Commit report
+    - name: Push to gh-pages
       run: |
         git config --global user.email "autodeploy@noreply.github.com"
         git config --global user.name "Autodeploy"
@@ -56,6 +56,9 @@ jobs:
         mv ./MyONez.Browser/bin/Web/net48/web.config ./docs/web.config -force
         mv ./MyONez.Browser/bin/Web/net48/bridge ./docs/bridge -force
         mv ./MyONez.Browser/bin/Web/net48/Content ./docs/Content -force
-        git commit -am "Merge master into gh-pages"
+        ls ./docs
+        git add --all .
+        git status
+        git commit -m "Merge master into gh-pages"
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ApmeM/MyONez.git          
         git push
