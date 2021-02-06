@@ -52,13 +52,13 @@ jobs:
         git config --global user.name "Autodeploy"
         git checkout gh-pages
         git merge --no-ff --no-commit origin/master
-        mv ./MyONez.Browser/bin/Web/net48/index.html ./docs/index.html -force
-        mv ./MyONez.Browser/bin/Web/net48/web.config ./docs/web.config -force
-        mv ./MyONez.Browser/bin/Web/net48/bridge ./docs/bridge -force
-        mv ./MyONez.Browser/bin/Web/net48/Content ./docs/Content -force
-        ls ./docs
+        rm -recurse -force ./docs
+        mkdir ./docs
+        mv ./MyONez.Browser/bin/Web/net48/index.html ./docs/ -force
+        mv ./MyONez.Browser/bin/Web/net48/web.config ./docs/ -force
+        mv ./MyONez.Browser/bin/Web/net48/bridge ./docs/ -force
+        mv ./MyONez.Browser/bin/Web/net48/Content ./docs/ -force
         git add --all .
-        git status
         git commit -m "Merge master into gh-pages"
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/ApmeM/MyONez.git          
         git push
