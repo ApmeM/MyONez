@@ -81,6 +81,9 @@
     <Reference Include="SpineEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SpineEngine.1.1.0\lib\netstandard2.0\SpineEngine.dll</HintPath>
     </Reference>
+    <Reference Include="MazeGenerators, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MazeGenerators.1.0.0\lib\netstandard2.0\MazeGenerators.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

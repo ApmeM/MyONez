@@ -31,6 +31,35 @@ Bridge.assembly("MyONez.Base", function ($asm, globals) {
         }
     });
 
+    Bridge.define("MyONez.Base.AdditionalStuff.ClientServer.ITransferMessageParser", {
+        $kind: "interface"
+    });
+
+    Bridge.define("MyONez.Base.AdditionalStuff.ClientServer.ParserUtils", {
+        statics: {
+            methods: {
+                FindStringifier: function (transferModel, parsers) {
+                    for (var j = 0; j < parsers.length; j = (j + 1) | 0) {
+                        if (parsers[System.Array.index(j, parsers)].MyONez$Base$AdditionalStuff$ClientServer$ITransferMessageParser$IsStringable(transferModel)) {
+                            return parsers[System.Array.index(j, parsers)];
+                        }
+                    }
+
+                    return null;
+                },
+                FindParser: function (data, parsers) {
+                    for (var j = 0; j < parsers.length; j = (j + 1) | 0) {
+                        if (parsers[System.Array.index(j, parsers)].MyONez$Base$AdditionalStuff$ClientServer$ITransferMessageParser$IsParsable(data)) {
+                            return parsers[System.Array.index(j, parsers)];
+                        }
+                    }
+
+                    return null;
+                }
+            }
+        }
+    });
+
     Bridge.define("MyONez.Base.AdditionalStuff.Common.Components.CameraShakeComponent", {
         inherits: [LocomotorECS.Component],
         fields: {
@@ -3137,9 +3166,10 @@ Bridge.assembly("MyONez.Base", function ($asm, globals) {
 
                 var progress = this.CreateEntity("progress");
                 var progressComponent = progress.AddComponent(MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.ProgressComponent(T));
-                progressComponent.Total = System.Linq.Enumerable.from(loadings).sum($asm.$.MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.f1);
+                progressComponent.Loadings = loadings;
+                progressComponent.TotalItems = System.Linq.Enumerable.from(loadings).sum($asm.$.MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.f1);
 
-                this.AddEntitySystem(new (MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.LoadElementUpdateSystem(T))(loadings, progressComponent));
+                this.AddEntitySystem(new (MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.ProgressUpdateSystem(T))());
                 this.AddEntitySystem(new (MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.ProgressMeshGeneratorSystem(T))());
             }
         }
@@ -3153,47 +3183,14 @@ Bridge.assembly("MyONez.Base", function ($asm, globals) {
         }
     });
 
-    Bridge.define("MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.LoadElementUpdateSystem", function (T) { return {
-        inherits: [LocomotorECS.EntitySystem],
-        $kind: "nested class",
-        fields: {
-            loadings: null,
-            progress: null,
-            currentLoading: 0
-        },
-        ctors: {
-            ctor: function (loadings, progress) {
-                this.$initialize();
-                LocomotorECS.EntitySystem.ctor.call(this);
-                this.loadings = loadings;
-                this.progress = progress;
-            }
-        },
-        methods: {
-            DoAction: function (gameTime) {
-                LocomotorECS.EntitySystem.prototype.DoAction.call(this, gameTime);
-                if (this.loadings.Count === this.currentLoading) {
-                    SpineEngine.Core.Instance.SwitchScene(Bridge.createInstance(T));
-                    return;
-                }
-
-                var enumerator = this.loadings.getItem(this.currentLoading).Enumerator;
-                if (!enumerator.System$Collections$IEnumerator$moveNext()) {
-                    this.currentLoading = (this.currentLoading + 1) | 0;
-                    return;
-                }
-
-                this.progress.Current = (this.progress.Current + 1) | 0;
-            }
-        }
-    }; });
-
     Bridge.define("MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.ProgressComponent", function (T) { return {
         inherits: [LocomotorECS.Component],
         $kind: "nested class",
         fields: {
-            Current: 0,
-            Total: 0
+            CurrentLoading: 0,
+            Loadings: null,
+            TotalItems: 0,
+            CurrentItem: 0
         }
     }; });
 
@@ -3214,9 +3211,47 @@ Bridge.assembly("MyONez.Base", function ($asm, globals) {
 
                 finalRender.Batch.Clear();
 
+                if (progress.TotalItems === 0) {
+                    return;
+                }
+
                 finalRender.Batch.Draw(SpineEngine.Graphics.Graphic.PixelTexture, new SpineEngine.Maths.RectangleF.$ctor2(99, ((SpineEngine.Core.Instance.Screen.Height - 101) | 0), ((SpineEngine.Core.Instance.Screen.Width - 198) | 0), 52), SpineEngine.Maths.RectangleF.op_Implicit$1(SpineEngine.Graphics.Graphic.PixelTexture.Bounds.$clone()), Microsoft.Xna.Framework.Color.Black.$clone());
 
-                finalRender.Batch.Draw(SpineEngine.Graphics.Graphic.PixelTexture, new SpineEngine.Maths.RectangleF.$ctor2(100, ((SpineEngine.Core.Instance.Screen.Height - 100) | 0), progress.Current * (SpineEngine.Core.Instance.Screen.Width - 200.0) / progress.Total, 50), SpineEngine.Maths.RectangleF.op_Implicit$1(SpineEngine.Graphics.Graphic.PixelTexture.Bounds.$clone()), Microsoft.Xna.Framework.Color.White.$clone());
+                finalRender.Batch.Draw(SpineEngine.Graphics.Graphic.PixelTexture, new SpineEngine.Maths.RectangleF.$ctor2(100, ((SpineEngine.Core.Instance.Screen.Height - 100) | 0), progress.CurrentItem * (SpineEngine.Core.Instance.Screen.Width - 200.0) / progress.TotalItems, 50), SpineEngine.Maths.RectangleF.op_Implicit$1(SpineEngine.Graphics.Graphic.PixelTexture.Bounds.$clone()), Microsoft.Xna.Framework.Color.White.$clone());
+            }
+        }
+    }; });
+
+    Bridge.define("MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.ProgressUpdateSystem", function (T) { return {
+        inherits: [LocomotorECS.EntityProcessingSystem],
+        $kind: "nested class",
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                LocomotorECS.EntityProcessingSystem.ctor.call(this, new LocomotorECS.Matching.Matcher().All([MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.ProgressComponent(T)]));
+            }
+        },
+        methods: {
+            DoAction$1: function (entity, gameTime) {
+                LocomotorECS.EntityProcessingSystem.prototype.DoAction$1.call(this, entity, gameTime);
+                var progress = entity.GetComponent(MyONez.Base.AdditionalStuff.Scenes.LoadingScene$1.ProgressComponent(T));
+                if (progress.Loadings.Count < progress.CurrentLoading) {
+                    return;
+                }
+
+                if (progress.Loadings.Count === progress.CurrentLoading) {
+                    progress.CurrentLoading = (progress.CurrentLoading + 1) | 0;
+                    SpineEngine.Core.Instance.SwitchScene(Bridge.createInstance(T));
+                    return;
+                }
+
+                var enumerator = progress.Loadings.getItem(progress.CurrentLoading).Enumerator;
+                if (!enumerator.System$Collections$IEnumerator$moveNext()) {
+                    progress.CurrentLoading = (progress.CurrentLoading + 1) | 0;
+                    return;
+                }
+
+                progress.CurrentItem = (progress.CurrentItem + 1) | 0;
             }
         }
     }; });
@@ -5154,6 +5189,520 @@ Bridge.assembly("MyONez.Base", function ($asm, globals) {
             }
         }
     });
+
+    Bridge.define("PixelRPG.Base.Screens.ClientComponent", {
+        inherits: [LocomotorECS.Component],
+        fields: {
+            Message: null,
+            Response: null
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.ClientReceiveHandlerSystem$1", function (T) { return {
+        inherits: [LocomotorECS.EntityProcessingSystem],
+        ctors: {
+            ctor: function (matcher) {
+                this.$initialize();
+                LocomotorECS.EntityProcessingSystem.ctor.call(this, matcher.All([PixelRPG.Base.Screens.ClientComponent]));
+            }
+        },
+        methods: {
+            DoAction$1: function (entity, gameTime) {
+                LocomotorECS.EntityProcessingSystem.prototype.DoAction$1.call(this, entity, gameTime);
+
+                var client = entity.GetComponent(PixelRPG.Base.Screens.ClientComponent);
+                if (client.Response == null || !Bridge.referenceEquals(Bridge.getType(client.Response), T)) {
+                    return;
+                }
+
+                var message = Bridge.cast(Bridge.unbox(client.Response, T), T);
+                this.DoAction$2(message, entity, gameTime);
+            }
+        }
+    }; });
+
+    Bridge.define("PixelRPG.Base.Screens.ClientSendHandlerSystem$1", function (T) { return {
+        inherits: [LocomotorECS.EntityProcessingSystem],
+        ctors: {
+            ctor: function (matcher) {
+                this.$initialize();
+                LocomotorECS.EntityProcessingSystem.ctor.call(this, matcher.All([PixelRPG.Base.Screens.ClientComponent]));
+            }
+        },
+        methods: {
+            DoAction$1: function (entity, gameTime) {
+                LocomotorECS.EntityProcessingSystem.prototype.DoAction$1.call(this, entity, gameTime);
+                var client = entity.GetComponent(PixelRPG.Base.Screens.ClientComponent);
+
+                var data = this.PrepareSendData(entity, gameTime);
+
+                if (data != null) {
+                    client.Message = data;
+                }
+            }
+        }
+    }; });
+
+    Bridge.define("PixelRPG.Base.Screens.LocalClientCommunicatorSystem", {
+        inherits: [LocomotorECS.EntityProcessingSystem],
+        fields: {
+            scene: null,
+            parsers: null
+        },
+        ctors: {
+            ctor: function (scene, parsers) {
+                if (parsers === void 0) { parsers = []; }
+
+                this.$initialize();
+                LocomotorECS.EntityProcessingSystem.ctor.call(this, new LocomotorECS.Matching.Matcher().All([PixelRPG.Base.Screens.LocalClientComponent, PixelRPG.Base.Screens.ClientComponent]));
+                this.scene = scene;
+                this.parsers = parsers;
+            }
+        },
+        methods: {
+            DoAction$1: function (entity, gameTime) {
+                LocomotorECS.EntityProcessingSystem.prototype.DoAction$1.call(this, entity, gameTime);
+                var localClient = entity.GetComponent(PixelRPG.Base.Screens.LocalClientComponent);
+                var client = entity.GetComponent(PixelRPG.Base.Screens.ClientComponent);
+                var serverEntity = this.scene.FindEntity(localClient.ServerEntity);
+                var localServer = serverEntity.GetComponent(PixelRPG.Base.Screens.LocalServerComponent);
+
+                if (System.Guid.op_Equality(localClient.Identifier, System.Guid.Empty)) {
+                    localClient.Identifier = System.Guid.NewGuid();
+                    localServer.PendingConnections.add(localClient.Identifier);
+                    return;
+                }
+
+                if (client.Message != null) {
+                    localServer.Request.get(localClient.Identifier).add(client.Message);
+                    //System.Diagnostics.Debug.WriteLine($"Local Client -> {localClient.Identifier} {ParserUtils.FindStringifier(client.Message, parsers).ToData(client.Message)}");
+                    client.Message = null;
+                }
+
+                var response = localServer.Response.get(localClient.Identifier);
+                client.Response = null;
+                if (response.Count !== 0) {
+                    client.Response = response.getItem(0);
+                    localServer.Response.get(localClient.Identifier).removeAt(0);
+                    //System.Diagnostics.Debug.WriteLine($"Local Client <- {localClient.Identifier} {ParserUtils.FindStringifier(client.Response, parsers).ToData(client.Response)}");
+                }
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.LocalClientComponent", {
+        inherits: [LocomotorECS.Component],
+        fields: {
+            ServerEntity: null,
+            Identifier: null
+        },
+        ctors: {
+            init: function () {
+                this.Identifier = new System.Guid();
+                this.Identifier = System.Guid.Empty;
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.LocalServerCommunicatorSystem", {
+        inherits: [LocomotorECS.EntityProcessingSystem],
+        ctors: {
+            ctor: function () {
+                this.$initialize();
+                LocomotorECS.EntityProcessingSystem.ctor.call(this, new LocomotorECS.Matching.Matcher().All([PixelRPG.Base.Screens.LocalServerComponent, PixelRPG.Base.Screens.ServerComponent]));
+            }
+        },
+        methods: {
+            DoAction$1: function (entity, gameTime) {
+                LocomotorECS.EntityProcessingSystem.prototype.DoAction$1.call(this, entity, gameTime);
+                var localServer = entity.GetComponent(PixelRPG.Base.Screens.LocalServerComponent);
+                var server = entity.GetComponent(PixelRPG.Base.Screens.ServerComponent);
+
+                if (localServer.PendingConnections.Count > 0) {
+                    for (var i = 0; i < localServer.PendingConnections.Count; i = (i + 1) | 0) {
+                        server.ConnectedPlayers = (server.ConnectedPlayers + 1) | 0;
+                        var tcpClient = localServer.PendingConnections.getItem(i);
+                        localServer.Clients.add(tcpClient);
+                        localServer.PlayerIdToClient.set(server.ConnectedPlayers, tcpClient);
+                        localServer.ClientToPlayerId.set(tcpClient, server.ConnectedPlayers);
+                        server.Request.set(localServer.ClientToPlayerId.get(tcpClient), new (System.Collections.Generic.List$1(System.Object)).ctor());
+                        server.Response.set(localServer.ClientToPlayerId.get(tcpClient), new (System.Collections.Generic.List$1(System.Object)).ctor());
+                        localServer.Request.set(tcpClient, new (System.Collections.Generic.List$1(System.Object)).ctor());
+                        localServer.Response.set(tcpClient, new (System.Collections.Generic.List$1(System.Object)).ctor());
+                    }
+                    localServer.PendingConnections.clear();
+                }
+
+                for (var i1 = 0; i1 < localServer.Clients.Count; i1 = (i1 + 1) | 0) {
+                    var client = localServer.Clients.getItem(i1);
+                    var id = localServer.ClientToPlayerId.get(client);
+                    if (localServer.Request.containsKey(client) && localServer.Request.get(client).Count > 0) {
+                        var data = localServer.Request.get(client);
+                        server.Request.get(id).AddRange(data);
+                        //System.Diagnostics.Debug.WriteLine($"Local Server <- {client} ({id}) {data.Count} items");
+                        data.clear();
+                    }
+
+                    if (server.Response.containsKey(id) && server.Response.get(id).Count > 0) {
+                        var data1 = server.Response.get(id);
+                        localServer.Response.get(client).AddRange(data1);
+                        //System.Diagnostics.Debug.WriteLine($"Local Server -> {client} ({id}) {data.Count} items");
+                        data1.clear();
+                    }
+                }
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.LocalServerComponent", {
+        inherits: [LocomotorECS.Component],
+        fields: {
+            Request: null,
+            Response: null,
+            PendingConnections: null,
+            ClientToPlayerId: null,
+            PlayerIdToClient: null,
+            Clients: null
+        },
+        ctors: {
+            init: function () {
+                this.Request = new (System.Collections.Generic.Dictionary$2(System.Guid,System.Collections.Generic.List$1(System.Object)))();
+                this.Response = new (System.Collections.Generic.Dictionary$2(System.Guid,System.Collections.Generic.List$1(System.Object)))();
+                this.PendingConnections = new (System.Collections.Generic.List$1(System.Guid)).ctor();
+                this.ClientToPlayerId = new (System.Collections.Generic.Dictionary$2(System.Guid,System.Int32))();
+                this.PlayerIdToClient = new (System.Collections.Generic.Dictionary$2(System.Int32,System.Guid))();
+                this.Clients = new (System.Collections.Generic.List$1(System.Guid)).ctor();
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.NetworkClientCommunicatorSystem", {
+        inherits: [LocomotorECS.EntityProcessingSystem],
+        fields: {
+            ms: null,
+            reader: null,
+            parsers: null
+        },
+        ctors: {
+            ctor: function (parsers) {
+                if (parsers === void 0) { parsers = []; }
+
+                this.$initialize();
+                LocomotorECS.EntityProcessingSystem.ctor.call(this, new LocomotorECS.Matching.Matcher().All([PixelRPG.Base.Screens.NetworkClientComponent, PixelRPG.Base.Screens.ClientComponent]));
+                this.ms = new System.IO.MemoryStream.ctor();
+                this.reader = new System.IO.StreamReader.$ctor3(this.ms, System.Text.Encoding.UTF8);
+                this.parsers = parsers;
+            }
+        },
+        methods: {
+            DoAction$1: function (entity, gameTime) {
+                LocomotorECS.EntityProcessingSystem.prototype.DoAction$1.call(this, entity, gameTime);
+                var networkClient = entity.GetComponent(PixelRPG.Base.Screens.NetworkClientComponent);
+                var client = entity.GetComponent(PixelRPG.Base.Screens.ClientComponent);
+
+                if (networkClient.Client == null) {
+                    networkClient.Client = new System.Net.WebSockets.ClientWebSocket();
+                    networkClient.Client.connectAsync(networkClient.ServerAddress, System.Threading.CancellationToken.none);
+                }
+
+                if (networkClient.Client.getState() !== "open") {
+                    return;
+                }
+
+                if (client.Message != null) {
+                    var transferModel = client.Message;
+                    var parser = MyONez.Base.AdditionalStuff.ClientServer.ParserUtils.FindStringifier(transferModel, this.parsers);
+                    var data = parser.MyONez$Base$AdditionalStuff$ClientServer$ITransferMessageParser$ToData(transferModel);
+                    networkClient.Client.sendAsync(new System.ArraySegment(System.Text.Encoding.UTF8.GetBytes$2(data)), "text", true, System.Threading.CancellationToken.none);
+                    client.Message = null;
+                    return;
+                }
+
+                if (networkClient.RecievingTask == null) {
+                    networkClient.RecievingTask = networkClient.Client.receiveAsync(networkClient.RecievingBuffer, System.Threading.CancellationToken.none);
+                }
+
+                if (networkClient.RecievingTask.isCompleted()) {
+                    var result = networkClient.RecievingTask.getResult();
+                    networkClient.RecievingTask = null;
+                    this.ms.Seek(System.Int64(0), 0);
+                    this.ms.SetLength(System.Int64(0));
+                    this.ms.Write(networkClient.RecievingBuffer.getArray(), networkClient.RecievingBuffer.getOffset(), result.getCount());
+
+                    while (!result.getEndOfMessage()) {
+                        result = networkClient.Client.receiveAsync(networkClient.RecievingBuffer, System.Threading.CancellationToken.none).getResult();
+                        this.ms.Write(networkClient.RecievingBuffer.getArray(), networkClient.RecievingBuffer.getOffset(), result.getCount());
+                    }
+                    ;
+
+
+                    this.ms.Seek(System.Int64(0), 0);
+                    var data1 = this.reader.ReadToEnd();
+
+                    var parser1 = MyONez.Base.AdditionalStuff.ClientServer.ParserUtils.FindParser(data1, this.parsers);
+                    client.Response = parser1.MyONez$Base$AdditionalStuff$ClientServer$ITransferMessageParser$ToTransferModel(data1);
+                }
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.NetworkClientComponent", {
+        inherits: [LocomotorECS.Component],
+        fields: {
+            Client: null,
+            RecievingTask: null,
+            RecievingBuffer: null
+        },
+        props: {
+            ServerAddress: null
+        },
+        ctors: {
+            init: function () {
+                this.RecievingBuffer = new System.ArraySegment();
+                this.RecievingBuffer = new System.ArraySegment(System.Array.init(2048, 0, System.Byte));
+            },
+            ctor: function (serverAddress) {
+                this.$initialize();
+                LocomotorECS.Component.ctor.call(this);
+                this.ServerAddress = serverAddress;
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.NetworkServerCommunicatorSystem", {
+        inherits: [LocomotorECS.EntityProcessingSystem],
+        statics: {
+            methods: {
+                GetDecodedData: function (buffer, length) {
+                    var b = buffer[System.Array.index(1, buffer)];
+                    var dataLength = 0;
+                    var totalLength = 0;
+                    var keyIndex = 0;
+
+                    if (((b - 128) | 0) <= 125) {
+                        dataLength = (b - 128) | 0;
+                        keyIndex = 2;
+                        totalLength = (dataLength + 6) | 0;
+                    }
+
+                    if (((b - 128) | 0) === 126) {
+                        dataLength = System.BitConverter.toInt16(System.Array.init([buffer[System.Array.index(3, buffer)], buffer[System.Array.index(2, buffer)]], System.Byte), 0);
+                        keyIndex = 4;
+                        totalLength = (dataLength + 8) | 0;
+                    }
+
+                    if (((b - 128) | 0) === 127) {
+                        dataLength = System.Int64.clip32(System.BitConverter.toInt64(System.Array.init([buffer[System.Array.index(9, buffer)], buffer[System.Array.index(8, buffer)], buffer[System.Array.index(7, buffer)], buffer[System.Array.index(6, buffer)], buffer[System.Array.index(5, buffer)], buffer[System.Array.index(4, buffer)], buffer[System.Array.index(3, buffer)], buffer[System.Array.index(2, buffer)]], System.Byte), 0));
+                        keyIndex = 10;
+                        totalLength = (dataLength + 14) | 0;
+                    }
+
+                    if (totalLength > length) {
+                        throw new System.Exception("The buffer length is small than the data length");
+                    }
+
+                    var key = System.Array.init([buffer[System.Array.index(keyIndex, buffer)], buffer[System.Array.index(((keyIndex + 1) | 0), buffer)], buffer[System.Array.index(((keyIndex + 2) | 0), buffer)], buffer[System.Array.index(((keyIndex + 3) | 0), buffer)]], System.Byte);
+
+                    var dataIndex = (keyIndex + 4) | 0;
+                    var count = 0;
+                    for (var i = dataIndex; i < totalLength; i = (i + 1) | 0) {
+                        buffer[System.Array.index(i, buffer)] = (buffer[System.Array.index(i, buffer)] ^ key[System.Array.index(count % 4, key)]) & 255;
+                        count = (count + 1) | 0;
+                    }
+
+                    var retBytes = System.Array.init(dataLength, 0, System.Byte);
+
+                    System.Array.copy(buffer, dataIndex, retBytes, 0, dataLength);
+
+                    return retBytes;
+                },
+                GetFrameFromBytes: function (bytesRaw) {
+                    var response;
+                    var frame = System.Array.init(10, 0, System.Byte);
+
+                    var indexStartRawData = -1;
+                    var length = bytesRaw.length;
+
+                    frame[System.Array.index(0, frame)] = 129;
+                    if (length <= 125) {
+                        frame[System.Array.index(1, frame)] = length & 255;
+                        indexStartRawData = 2;
+                    } else if (length >= 126 && length <= 65535) {
+                        frame[System.Array.index(1, frame)] = 126;
+                        frame[System.Array.index(2, frame)] = ((length >> 8) & 255) & 255;
+                        frame[System.Array.index(3, frame)] = (length & 255) & 255;
+                        indexStartRawData = 4;
+                    } else {
+                        frame[System.Array.index(1, frame)] = 127;
+                        frame[System.Array.index(2, frame)] = ((length >> 56) & 255) & 255;
+                        frame[System.Array.index(3, frame)] = ((length >> 48) & 255) & 255;
+                        frame[System.Array.index(4, frame)] = ((length >> 40) & 255) & 255;
+                        frame[System.Array.index(5, frame)] = ((length >> 32) & 255) & 255;
+                        frame[System.Array.index(6, frame)] = ((length >> 24) & 255) & 255;
+                        frame[System.Array.index(7, frame)] = ((length >> 16) & 255) & 255;
+                        frame[System.Array.index(8, frame)] = ((length >> 8) & 255) & 255;
+                        frame[System.Array.index(9, frame)] = (length & 255) & 255;
+
+                        indexStartRawData = 10;
+                    }
+
+                    response = System.Array.init(((indexStartRawData + length) | 0), 0, System.Byte);
+
+                    var i, reponseIdx = 0;
+
+                    //Add the frame bytes to the reponse
+                    for (i = 0; i < indexStartRawData; i = (i + 1) | 0) {
+                        response[System.Array.index(reponseIdx, response)] = frame[System.Array.index(i, frame)];
+                        reponseIdx = (reponseIdx + 1) | 0;
+                    }
+
+                    //Add the data bytes to the response
+                    for (i = 0; i < length; i = (i + 1) | 0) {
+                        response[System.Array.index(reponseIdx, response)] = bytesRaw[System.Array.index(i, bytesRaw)];
+                        reponseIdx = (reponseIdx + 1) | 0;
+                    }
+
+                    return response;
+                }
+            }
+        },
+        fields: {
+            parsers: null
+        },
+        ctors: {
+            ctor: function (parsers) {
+                if (parsers === void 0) { parsers = []; }
+
+                this.$initialize();
+                LocomotorECS.EntityProcessingSystem.ctor.call(this, new LocomotorECS.Matching.Matcher().All([PixelRPG.Base.Screens.NetworkServerComponent, PixelRPG.Base.Screens.ServerComponent]));
+                this.parsers = parsers;
+            }
+        },
+        methods: {
+            DoAction$1: function (entity, gameTime) {
+                LocomotorECS.EntityProcessingSystem.prototype.DoAction$1.call(this, entity, gameTime);
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.NetworkServerComponent", {
+        inherits: [LocomotorECS.Component],
+        props: {
+            Ip: null,
+            Port: 0
+        },
+        ctors: {
+            ctor: function (ip, port) {
+                this.$initialize();
+                LocomotorECS.Component.ctor.call(this);
+                this.Ip = ip;
+                this.Port = port;
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.ServerComponent", {
+        inherits: [LocomotorECS.Component],
+        fields: {
+            ConnectedPlayers: 0,
+            Request: null,
+            Response: null
+        },
+        ctors: {
+            init: function () {
+                this.Request = new (System.Collections.Generic.Dictionary$2(System.Int32,System.Collections.Generic.List$1(System.Object)))();
+                this.Response = new (System.Collections.Generic.Dictionary$2(System.Int32,System.Collections.Generic.List$1(System.Object)))();
+            }
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.ServerReceiveHandlerSystem", {
+        inherits: [LocomotorECS.EntityProcessingSystem],
+        fields: {
+            handlers: null
+        },
+        ctors: {
+            ctor: function (handlers) {
+                if (handlers === void 0) { handlers = []; }
+
+                this.$initialize();
+                LocomotorECS.EntityProcessingSystem.ctor.call(this, new LocomotorECS.Matching.Matcher().All([PixelRPG.Base.Screens.ServerComponent]));
+                this.handlers = System.Linq.Enumerable.from(handlers).toDictionary($asm.$.PixelRPG.Base.Screens.ServerReceiveHandlerSystem.f1, null, Function, PixelRPG.Base.Screens.ServerReceiveHandlerSystem.IHandler);
+            }
+        },
+        methods: {
+            DoAction$1: function (entity, gameTime) {
+                var $t;
+                LocomotorECS.EntityProcessingSystem.prototype.DoAction$1.call(this, entity, gameTime);
+                var server = entity.GetComponent(PixelRPG.Base.Screens.ServerComponent);
+                $t = Bridge.getEnumerator(server.Request);
+                try {
+                    while ($t.moveNext()) {
+                        var req = $t.Current;
+                        if (!server.Response.containsKey(req.key)) {
+                            server.Response.set(req.key, new (System.Collections.Generic.List$1(System.Object)).ctor());
+                        }
+
+                        for (var i = 0; i < req.value.Count; i = (i + 1) | 0) {
+                            this.handlers.get(Bridge.getType(req.value.getItem(i))).PixelRPG$Base$Screens$ServerReceiveHandlerSystem$IHandler$Handle(server, req.key, req.value.getItem(i));
+                        }
+
+                        req.value.clear();
+                    }
+                } finally {
+                    if (Bridge.is($t, System.IDisposable)) {
+                        $t.System$IDisposable$Dispose();
+                    }
+                }
+            }
+        }
+    });
+
+    Bridge.ns("PixelRPG.Base.Screens.ServerReceiveHandlerSystem", $asm.$);
+
+    Bridge.apply($asm.$.PixelRPG.Base.Screens.ServerReceiveHandlerSystem, {
+        f1: function (a) {
+            return a.PixelRPG$Base$Screens$ServerReceiveHandlerSystem$IHandler$MessageType;
+        }
+    });
+
+    Bridge.define("PixelRPG.Base.Screens.ServerReceiveHandlerSystem.IHandler", {
+        $kind: "nested interface"
+    });
+
+    Bridge.define("MyONez.Base.AdditionalStuff.ClientServer.TransferMessageParser$1", function (T) { return {
+        inherits: [MyONez.Base.AdditionalStuff.ClientServer.ITransferMessageParser],
+        statics: {
+            fields: {
+                TypeName: null
+            },
+            ctors: {
+                init: function () {
+                    this.TypeName = Bridge.Reflection.getTypeName(T);
+                }
+            }
+        },
+        alias: [
+            "IsParsable", "MyONez$Base$AdditionalStuff$ClientServer$ITransferMessageParser$IsParsable",
+            "IsStringable", "MyONez$Base$AdditionalStuff$ClientServer$ITransferMessageParser$IsStringable",
+            "ToData", "MyONez$Base$AdditionalStuff$ClientServer$ITransferMessageParser$ToData",
+            "ToTransferModel", "MyONez$Base$AdditionalStuff$ClientServer$ITransferMessageParser$ToTransferModel"
+        ],
+        methods: {
+            IsParsable: function (data) {
+                return System.String.startsWith(data, System.String.format("{0}:", [MyONez.Base.AdditionalStuff.ClientServer.TransferMessageParser$1(T).TypeName]));
+            },
+            IsStringable: function (transferModel) {
+                return Bridge.is(transferModel, T);
+            },
+            ToData: function (transferModel) {
+                return (MyONez.Base.AdditionalStuff.ClientServer.TransferMessageParser$1(T).TypeName || "") + ":" + (this.InternalToData(Bridge.cast(Bridge.unbox(transferModel, T), T)) || "");
+            },
+            ToTransferModel: function (data) {
+                return this.InternalToTransferModel(data.substr(((MyONez.Base.AdditionalStuff.ClientServer.TransferMessageParser$1(T).TypeName.length + 1) | 0)));
+            }
+        }
+    }; });
 
     Bridge.define("MyONez.Base.AdditionalStuff.Effects.WaterReflectionEffect", {
         inherits: [MyONez.Base.AdditionalStuff.Effects.ReflectionEffect],
@@ -8424,6 +8973,27 @@ Bridge.assembly("MyONez.Base", function ($asm, globals) {
             FaceUI.Utils.MessageBox.BuildMessageBox$1("Not Yet", "We still have much to see.").Show();
         }
     });
+
+    Bridge.define("PixelRPG.Base.Screens.ServerReceiveHandlerSystem.Handler$1", function (TMessage) { return {
+        inherits: [PixelRPG.Base.Screens.ServerReceiveHandlerSystem.IHandler],
+        $kind: "nested class",
+        props: {
+            MessageType: {
+                get: function () {
+                    return TMessage;
+                }
+            }
+        },
+        alias: [
+            "MessageType", "PixelRPG$Base$Screens$ServerReceiveHandlerSystem$IHandler$MessageType",
+            "Handle", "PixelRPG$Base$Screens$ServerReceiveHandlerSystem$IHandler$Handle"
+        ],
+        methods: {
+            Handle: function (server, connectionKey, message) {
+                this.Handle$1(server, connectionKey, Bridge.cast(Bridge.unbox(message, TMessage), TMessage));
+            }
+        }
+    }; });
 
     Bridge.define("MyONez.Base.AdditionalStuff.Materials.WaterReflectionMaterial", {
         inherits: [SpineEngine.Graphics.Materials.Material$1(MyONez.Base.AdditionalStuff.Effects.WaterReflectionEffect)],
