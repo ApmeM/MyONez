@@ -1,4 +1,4 @@
-﻿namespace PixelRPG.Base.Screens
+﻿namespace MyONez.Base.AdditionalStuff.ClientServer.EntitySystems
 {
     using System.Collections.Generic;
 
@@ -14,17 +14,18 @@
     using System.Text;
     using System.Text.RegularExpressions;
     using System;
+    using MyONez.Base.AdditionalStuff.ClientServer.Components;
 
     public class NetworkServerCommunicatorSystem : EntityProcessingSystem
     {
         private readonly ITransferMessageParser[] parsers;
 
-        public NetworkServerCommunicatorSystem(params ITransferMessageParser[] parsers) : base(new Matcher().All(typeof(NetworkServerComponent), typeof(ServerComponent)))
+        public NetworkServerCommunicatorSystem(ITransferMessageParser[] parsers = null) : base(new Matcher().All(typeof(NetworkServerComponent), typeof(ServerComponent)))
         {
             this.parsers = parsers;
         }
 
-        protected override void DoAction(Entity entity, System.TimeSpan gameTime)
+        protected override void DoAction(Entity entity, TimeSpan gameTime)
         {
             base.DoAction(entity, gameTime);
 #if Bridge
@@ -49,17 +50,17 @@
                 server.ConnectedPlayers++;
                 var tcpClient = networkServer.Listener.EndAcceptTcpClient(networkServer.ConnectResult);
                 networkServer.Clients.Add(tcpClient);
-                networkServer.PlayerIdToClient[server.ConnectedPlayers] = tcpClient;
-                networkServer.ClientToPlayerId[tcpClient] = server.ConnectedPlayers;
-                server.Request[networkServer.ClientToPlayerId[tcpClient]] = new List<object>();
-                server.Response[networkServer.ClientToPlayerId[tcpClient]] = new List<object>();
+                networkServer.ConnectionKeyToClient[server.ConnectedPlayers] = tcpClient;
+                networkServer.ClientToConnectionKey[tcpClient] = server.ConnectedPlayers;
+                server.Request[networkServer.ClientToConnectionKey[tcpClient]] = new Queue<object>();
+                server.Response[networkServer.ClientToConnectionKey[tcpClient]] = new Queue<object>();
                 networkServer.ConnectResult = null;
             }
 
             for (var i = 0; i < networkServer.Clients.Count; i++)
             {
                 var tcpClient = networkServer.Clients[i];
-                var id = networkServer.ClientToPlayerId[tcpClient];
+                var connectionKey = networkServer.ClientToConnectionKey[tcpClient];
                 if (tcpClient.Available > 0)
                 {
                     byte[] bytes = new byte[tcpClient.Available];
@@ -87,26 +88,25 @@
                     }
 
                     data = Encoding.UTF8.GetString(GetDecodedData(bytes, bytes.Length));
-                    System.Diagnostics.Debug.WriteLine($"Network Server <- {data}");
-
-                    var parser = ParserUtils.FindParser(data, parsers);
-                    server.Request[id].Add(parser.ToTransferModel(data));
+                    var parser = TransferMessageParserUtils.FindReader(data, parsers);
+                    var transferMessage = parser.Read(data);
+                    server.Request[connectionKey].Enqueue(transferMessage);
+                    System.Diagnostics.Debug.WriteLine($"Network Server <- ({connectionKey}.{transferMessage}): {data}");
                     continue;
                 }
 
-                var response = server.Response[id];
-                if (response.Count != 0)
+                var response = server.Response[connectionKey];
+                if (response.Count > 0)
                 {
-                    var transferModel = response[0];
-                    var parser = ParserUtils.FindStringifier(transferModel, parsers);
-                    var data = parser.ToData(transferModel);
-                    System.Diagnostics.Debug.WriteLine($"Network Server -> {data}");
+                    var transferMessage = response.Dequeue();
+                    var parser = TransferMessageParserUtils.FindWriter(transferMessage, parsers);
+                    var data = parser.Write(transferMessage);
+                    System.Diagnostics.Debug.WriteLine($"Network Server -> ({connectionKey}.{transferMessage}): {data}");
 
                     byte[] frame = GetFrameFromBytes(Encoding.UTF8.GetBytes(data));
 
                     tcpClient.GetStream().Write(frame, 0, frame.Length);
                     tcpClient.GetStream().Flush();
-                    server.Response[id].RemoveAt(0);
                     return;
                 }
             }
@@ -116,10 +116,10 @@
 
         public static byte[] GetDecodedData(byte[] buffer, int length)
         {
-            byte b = buffer[1];
-            int dataLength = 0;
-            int totalLength = 0;
-            int keyIndex = 0;
+            var b = buffer[1];
+            var dataLength = 0;
+            var totalLength = 0;
+            var keyIndex = 0;
 
             if (b - 128 <= 125)
             {
@@ -145,17 +145,17 @@
             if (totalLength > length)
                 throw new Exception("The buffer length is small than the data length");
 
-            byte[] key = new byte[] { buffer[keyIndex], buffer[keyIndex + 1], buffer[keyIndex + 2], buffer[keyIndex + 3] };
+            var key = new byte[] { buffer[keyIndex], buffer[keyIndex + 1], buffer[keyIndex + 2], buffer[keyIndex + 3] };
 
-            int dataIndex = keyIndex + 4;
-            int count = 0;
-            for (int i = dataIndex; i < totalLength; i++)
+            var dataIndex = keyIndex + 4;
+            var count = 0;
+            for (var i = dataIndex; i < totalLength; i++)
             {
                 buffer[i] = (byte)(buffer[i] ^ key[count % 4]);
                 count++;
             }
 
-            byte[] retBytes = new byte[dataLength];
+            var retBytes = new byte[dataLength];
 
             Array.Copy(buffer, dataIndex, retBytes, 0, dataLength);
 
@@ -165,12 +165,12 @@
         public static byte[] GetFrameFromBytes(byte[] bytesRaw)
         {
             byte[] response;
-            byte[] frame = new byte[10];
+            var frame = new byte[10];
 
-            int indexStartRawData = -1;
-            int length = bytesRaw.Length;
+            var indexStartRawData = -1;
+            var length = bytesRaw.Length;
 
-            frame[0] = (byte)(128 + (int)1);
+            frame[0] = 128 + 1;
             if (length <= 125)
             {
                 frame[1] = (byte)length;
@@ -178,21 +178,21 @@
             }
             else if (length >= 126 && length <= 65535)
             {
-                frame[1] = (byte)126;
-                frame[2] = (byte)((length >> 8) & 255);
+                frame[1] = 126;
+                frame[2] = (byte)(length >> 8 & 255);
                 frame[3] = (byte)(length & 255);
                 indexStartRawData = 4;
             }
             else
             {
-                frame[1] = (byte)127;
-                frame[2] = (byte)((length >> 56) & 255);
-                frame[3] = (byte)((length >> 48) & 255);
-                frame[4] = (byte)((length >> 40) & 255);
-                frame[5] = (byte)((length >> 32) & 255);
-                frame[6] = (byte)((length >> 24) & 255);
-                frame[7] = (byte)((length >> 16) & 255);
-                frame[8] = (byte)((length >> 8) & 255);
+                frame[1] = 127;
+                frame[2] = (byte)(length >> 56 & 255);
+                frame[3] = (byte)(length >> 48 & 255);
+                frame[4] = (byte)(length >> 40 & 255);
+                frame[5] = (byte)(length >> 32 & 255);
+                frame[6] = (byte)(length >> 24 & 255);
+                frame[7] = (byte)(length >> 16 & 255);
+                frame[8] = (byte)(length >> 8 & 255);
                 frame[9] = (byte)(length & 255);
 
                 indexStartRawData = 10;

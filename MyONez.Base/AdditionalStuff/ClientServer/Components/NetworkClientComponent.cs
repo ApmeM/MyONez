@@ -1,4 +1,4 @@
-﻿namespace PixelRPG.Base.Screens
+﻿namespace MyONez.Base.AdditionalStuff.ClientServer.Components
 {
     using System;
     #region Using Directives

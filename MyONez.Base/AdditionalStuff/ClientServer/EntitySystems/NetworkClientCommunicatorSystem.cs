@@ -1,4 +1,4 @@
-﻿namespace PixelRPG.Base.Screens
+﻿namespace MyONez.Base.AdditionalStuff.ClientServer.EntitySystems
 {
     #region Using Directives
 
@@ -10,6 +10,7 @@
     using System;
     using System.IO;
     using MyONez.Base.AdditionalStuff.ClientServer;
+    using MyONez.Base.AdditionalStuff.ClientServer.Components;
     #endregion
 
     public class NetworkClientCommunicatorSystem : EntityProcessingSystem
@@ -18,7 +19,7 @@
         private readonly StreamReader reader;
         private readonly ITransferMessageParser[] parsers;
 
-        public NetworkClientCommunicatorSystem(params ITransferMessageParser[] parsers) : base(new Matcher().All(typeof(NetworkClientComponent), typeof(ClientComponent)))
+        public NetworkClientCommunicatorSystem(ITransferMessageParser[] parsers = null) : base(new Matcher().All(typeof(NetworkClientComponent), typeof(ClientComponent)))
         {
             this.ms = new MemoryStream();
             this.reader = new StreamReader(ms, Encoding.UTF8);
@@ -44,18 +45,20 @@
 
             if (client.Message != null)
             {
-                var transferModel = client.Message;
-                var parser = ParserUtils.FindStringifier(transferModel, parsers);
-                var data = parser.ToData(transferModel);
-                System.Diagnostics.Debug.WriteLine($"Network Client -> {data}");
+                var transferMessage = client.Message;
+                var parser = TransferMessageParserUtils.FindWriter(transferMessage, parsers);
+                var data = parser.Write(transferMessage);
+                System.Diagnostics.Debug.WriteLine($"Network Client -> ({transferMessage}): {data}");
                 networkClient.Client.SendAsync(
                     new ArraySegment<byte>(Encoding.UTF8.GetBytes(data)),
-                    WebSocketMessageType.Text, 
+                    WebSocketMessageType.Text,
                     true,
                     CancellationToken.None);
                 client.Message = null;
                 return;
             }
+            
+            client.Response = null;
 
             if (networkClient.RecievingTask == null)
             {
@@ -64,7 +67,7 @@
 
             if (networkClient.RecievingTask.IsCompleted)
             {
-                WebSocketReceiveResult result = networkClient.RecievingTask.Result;
+                var result = networkClient.RecievingTask.Result;
                 networkClient.RecievingTask = null;
                 ms.Seek(0, SeekOrigin.Begin);
                 ms.SetLength(0);
@@ -80,9 +83,10 @@
                 ms.Seek(0, SeekOrigin.Begin);
                 var data = reader.ReadToEnd();
 
-                System.Diagnostics.Debug.WriteLine($"Network Client <- {data}");
-                var parser = ParserUtils.FindParser(data, parsers);
-                client.Response = parser.ToTransferModel(data);
+                var parser = TransferMessageParserUtils.FindReader(data, parsers);
+                var transferMessage = parser.Read(data);
+                client.Response = transferMessage;
+                System.Diagnostics.Debug.WriteLine($"Network Client <- ({transferMessage}): {data}");
             }
         }
     }
