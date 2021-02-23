@@ -1,4 +1,4 @@
-﻿namespace PixelRPG.Base.Screens
+﻿namespace MyONez.Base.AdditionalStuff.ClientServer.EntitySystems
 {
     #region Using Directives
 
@@ -7,12 +7,16 @@
     using LocomotorECS;
     using SpineEngine.ECS;
     using LocomotorECS.Matching;
+    using MyONez.Base.AdditionalStuff.ClientServer.Components;
     #endregion
 
     public class LocalServerCommunicatorSystem : EntityProcessingSystem
     {
-        public LocalServerCommunicatorSystem() : base(new Matcher().All(typeof(LocalServerComponent), typeof(ServerComponent)))
+        private readonly ITransferMessageParser[] parsers;
+
+        public LocalServerCommunicatorSystem(ITransferMessageParser[] parsers = null) : base(new Matcher().All(typeof(LocalServerComponent), typeof(ServerComponent)))
         {
+            this.parsers = parsers;
         }
 
         protected override void DoAction(Entity entity, System.TimeSpan gameTime)
@@ -28,12 +32,12 @@
                     server.ConnectedPlayers++;
                     var tcpClient = localServer.PendingConnections[i];
                     localServer.Clients.Add(tcpClient);
-                    localServer.PlayerIdToClient[server.ConnectedPlayers] = tcpClient;
-                    localServer.ClientToPlayerId[tcpClient] = server.ConnectedPlayers;
-                    server.Request[localServer.ClientToPlayerId[tcpClient]] = new List<object>();
-                    server.Response[localServer.ClientToPlayerId[tcpClient]] = new List<object>();
-                    localServer.Request[tcpClient] = new List<object>();
-                    localServer.Response[tcpClient] = new List<object>();
+                    localServer.ConnectionKeyToClient[server.ConnectedPlayers] = tcpClient;
+                    localServer.ClientToConnectionKey[tcpClient] = server.ConnectedPlayers;
+                    server.Request[localServer.ClientToConnectionKey[tcpClient]] = new Queue<object>();
+                    server.Response[localServer.ClientToConnectionKey[tcpClient]] = new Queue<object>();
+                    localServer.Request[tcpClient] = new Queue<string>();
+                    localServer.Response[tcpClient] = new Queue<string>();
                 }
                 localServer.PendingConnections.Clear();
             }
@@ -41,21 +45,31 @@
             for (var i = 0; i < localServer.Clients.Count; i++)
             {
                 var client = localServer.Clients[i];
-                var id = localServer.ClientToPlayerId[client];
+                var connectionKey = localServer.ClientToConnectionKey[client];
                 if (localServer.Request.ContainsKey(client) && localServer.Request[client].Count > 0)
                 {
-                    var data = localServer.Request[client];
-                    server.Request[id].AddRange(data);
-                    //System.Diagnostics.Debug.WriteLine($"Local Server <- {client} ({id}) {data.Count} items");
-                    data.Clear();
+                    var request = localServer.Request[client];
+                    while (request.Count > 0)
+                    {
+                        var data = request.Dequeue();
+                        var parser = TransferMessageParserUtils.FindReader(data, parsers);
+                        var transferMessage = parser.Read(data);
+                        System.Diagnostics.Debug.WriteLine($"Local Server <- ({connectionKey}.{transferMessage}): {data}");
+                        server.Request[connectionKey].Enqueue(transferMessage);
+                    }
                 }
 
-                if (server.Response.ContainsKey(id) && server.Response[id].Count > 0)
+                if (server.Response.ContainsKey(connectionKey) && server.Response[connectionKey].Count > 0)
                 {
-                    var data = server.Response[id];
-                    localServer.Response[client].AddRange(data);
-                    //System.Diagnostics.Debug.WriteLine($"Local Server -> {client} ({id}) {data.Count} items");
-                    data.Clear();
+                    var response = server.Response[connectionKey];
+                    while (response.Count > 0)
+                    {
+                        var transferMessage = response.Dequeue();
+                        var parser = TransferMessageParserUtils.FindWriter(transferMessage, parsers);
+                        var data = parser.Write(transferMessage);
+                        System.Diagnostics.Debug.WriteLine($"Local Server -> ({connectionKey}.{transferMessage}): {data}");
+                        localServer.Response[client].Enqueue(data);
+                    }
                 }
             }
         }
